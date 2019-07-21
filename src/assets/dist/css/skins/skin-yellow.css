@@ -78,9 +78,11 @@
   color: #ffffff;
   background: #1e282c;
 }
-.skin-yellow .sidebar-menu > li.active > a {
+.skin-yellow .sidebar-menu > li.active > a, 
+.skin-yellow .sidebar-menu > li > a:hover {
   border-left-color: #f39c12;
 }
+
 .skin-yellow .sidebar-menu > li > .treeview-menu {
   margin: 0 1px;
   background: #2c3b41;
