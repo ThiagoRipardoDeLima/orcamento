@@ -4,7 +4,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../_services/auth.service';
 import { first } from 'rxjs/operators';
 
-@Component({templateUrl: './login.component.html'})
+@Component({
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
 export class LoginComponent implements OnInit {
   
   loginForm: FormGroup;
@@ -23,7 +26,6 @@ export class LoginComponent implements OnInit {
       if (this.authService.currentUserValue){
         this.router.navigate(['/']);
       }
-      console.log('contrutor');
     }
 
   ngOnInit() {
@@ -31,14 +33,13 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
-    console.log('OnInit');
+    
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   get f() {return this.loginForm.controls;}
 
   onSubmit() {
-    console.log('Enviado');
 
     this.submitted = true;
 
