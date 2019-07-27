@@ -1,0 +1,30 @@
+.offset-2{
+    margin-left: 18.666667%;
+}
+
+button{
+    margin-right: 2px;
+}
+
+textarea{
+    resize: none;
+    height: 100px;
+}
+
+.header-content>img{
+    float: left;
+}
+
+.title-content{
+    margin-top: -5px;
+    font-size: 24px;
+}
+
+.subtitle-content{
+    font-size: 14px;
+    color: darkgray;
+}
+
+p{
+    margin:0px;
+}

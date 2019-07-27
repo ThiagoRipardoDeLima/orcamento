@@ -1,0 +1,73 @@
+<div class="row margin_0">
+    <div class="header-content col-md-6 padding_0">
+            <img src=".\assets\dist\img\InsumosIcon.png">
+            <p class="subtitle-content">{{subtitle}}</p>
+            <p class="title-content"><b>{{title}}</b></p>
+    </div>
+    <div class="col-md-6 padding_0">
+        <div class="row">
+            <div class="col-md-3"><button class="btn btn-lg btn-primary btn_padrao btn_novo" (click)="novoInsumo()">NOVO</button></div>
+            <div class="col-md-6">
+              
+                  <form class="form-horizontal" [formGroup]="formSearch" (ngSubmit)="buscarInsumo()" style="width: 30vw;">
+                     
+                        <div class="form-group form_search">
+                          <input class="form-control input-sm input_search" formControlName="id" type="number" placeholder="Código"/>
+                          <input class="form-control input-sm input_search" formControlName="descricao" type="text" placeholder="Descrição"/>
+                          <input class="form-control input-sm input_search" formControlName="tipo" type="text" placeholder="Tipo"/>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn_padrao btn_search">BUSCAR</button>
+                     
+                  </form>
+            </div>
+        </div>
+    </div>        
+</div>
+<br>
+<div class="box box-warning">
+       
+              <!-- /.box-header -->
+              <div class="box-body">
+                <table class="table table-bordered">
+                  <tr>
+                    <th style="width: 1vw"></th>
+                    <th style="width: 10vw">CÓDIGO</th>
+                    <th style="width: 40vw">DESCRIÇÃO</th>
+                    <th style="width: 5vw">TIPO</th>
+                    <th style="width: 5vw">UNIDADE</th>
+                    <th style="width: 10vw;">VALOR NÃO DESONERADO</th>
+                    <th style="width: 10vw">VALOR DESONERADO</th>
+                    <th style="width: 15vw"></th>
+                    
+                  </tr>
+
+                  <tr style="height: 25px" *ngFor='let insumo of insumos; let i = index;'>
+                    <td></td>
+                    <td>{{insumo.codigo}}</td>
+                    <td>{{insumo.descricao}}</td>
+                    <td>{{insumo.tipoinsumo}}</td>
+                    <td>{{insumo.unidademedida}}</td>
+                    <td>{{insumo.valornaodesonerado}}</td>
+                    <td>{{insumo.valordesonerado}}</td>
+                    <td style="text-align: center">
+                      <button class="btn btn-xs btn-warning" (click)="editar(insumo.codigo)" style="margin-right: 2px">EDITAR</button>
+                      <button class="btn btn-xs btn-danger" (click)="excluir(insumo.codigo, i)">EXCLUIR</button>
+                    </td>
+                    <td></td>
+                  </tr> 
+                </table>
+
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+                </ul>
+              </div>
+</div>
+<!-- /.box -->

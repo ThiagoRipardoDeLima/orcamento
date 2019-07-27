@@ -13,6 +13,7 @@
 }
 
 .bodyTable{
+    margin-top: 30vh;
     display: table;
     /* width: 100%;
     height: 100%;*/
@@ -22,7 +23,7 @@
     height: 100%;
 } */
 .back-html{
-    background-color: #C5EDEC;
+    background-color: #FFCB7E;
 }
 
 .back-logo{

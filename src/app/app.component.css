@@ -5,7 +5,15 @@
     top: 0;
     right: 0;
     float: none;
-    background: #d2d6de;
+    background: #ffcb7f;
     padding-left: 10px;
 }
+}
+
+.content-header>.breadcrumb {
+    background: #ffcb7f !important;
+}
+
+div{
+    font-family: 'Roboto Condensed', sans-serif !important;
 }
