@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/_services/auth.service';
 import { User } from 'src/app/_models/user';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-orcamento-menu',
@@ -19,6 +19,7 @@ export class OrcamentoMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
   logout(){

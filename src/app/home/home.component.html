@@ -1,4 +1,87 @@
-<div class="box box-content">
-    <p>home works!</p>
-</div>
+<breadcumb></breadcumb>
 
+<div class="box">
+
+    <section class="content">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3>{{estatisticaHome.totalOrcamentos}}</h3>
+                       
+                        <p>ORÇAMENTOS</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Visualizar<i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3>{{estatisticaHome.totalClientes}}</h3>
+
+                        <p>CLIENTES</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Visualizar<i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>{{estatisticaHome.totalInsumos}}</h3>
+
+                        <p>INSUMOS</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Visualizar<i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+           
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3>{{estatisticaHome.totalComposicoes}}</h3>
+        
+                        <p>COMPOSIÇÕES</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">Visualizar<i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+    <section class="content">
+        <!-- BAR CHART -->
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <h3 class="box-title">ORÇAMENTOS</h3>
+            </div>
+            <div class="box-body">
+                <div class="chart">
+                    <canvas id="barChart" style="height:230px"></canvas>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+    </section>
+</div>

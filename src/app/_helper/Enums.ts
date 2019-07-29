@@ -73,3 +73,9 @@
         'Verba',
         'Outros'
     }
+
+    export enum TipoBanco{
+        'PRÓPRIO',
+        'SINAPI'
+    }
+

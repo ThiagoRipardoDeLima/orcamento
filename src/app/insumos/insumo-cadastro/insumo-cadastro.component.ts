@@ -125,7 +125,7 @@ export class InsumoAddComponent{
     cancelar(e: Event){
         // console.log('Click ' + e);
         this.formularioInsumos.reset();
-        this.router.navigate(['/insumos']);
+        this.router.navigate(['/insumo']);
     }
 
     contador(){
@@ -134,11 +134,15 @@ export class InsumoAddComponent{
     }
 
     getValorNaoDesonerado(price: string){
+        if(price == '')
+            return;
         let valor = parseFloat(price.replace(',','.'));
         this.form.valornaodesonerado.setValue(this.getFormatPrice(valor));
     }
 
     getValorDesonerado(price: string){
+        if(price == '')
+            return;
         let valor = parseFloat(price.replace(',','.'));
         this.form.valordesonerado.setValue(this.getFormatPrice(valor));
     }

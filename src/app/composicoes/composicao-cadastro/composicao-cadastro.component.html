@@ -1,9 +1,10 @@
 <breadcumb></breadcumb>
 <div class="header-content">
     <!-- <img src=".\assets\dist\img\InsumosIcon.png"> -->
-    <div class="icon"><i class="fa fa-cube"></i></div>
+    <div class="icon"><i class="fa fa-cubes"></i></div>
     <p class="subtitle-content">{{subtitle}}</p>
     <p class="title-content"><b>{{title}}</b></p>
+    <p class="passos">{{passos}}</p>
 </div>
 <br>
 <div class="box box-solid box-primary" data-widget="box-widget">
@@ -11,7 +12,7 @@
         <h3 class="box-title">FORMULÁRIO</h3>
     </div>
     <div class="box-body">
-        <form class="form-horizontal" [formGroup]="formularioInsumos" (ngSubmit)="salvar()">
+        <form class="form-horizontal" [formGroup]="formulario" (ngSubmit)="salvar()">
             <!-- CODIGO -->
              <div class="form-group" [ngClass]="{'has-error': submitted && form.codigo.errors}">
                 <label for="codigo" class="col-sm-2 control-label" >Código</label>
@@ -36,31 +37,54 @@
                 </div>
             </div>
 
+             <!-- MAO DE OBRA -->   
+             <div class="form-group">
+                <label for="maodeobra" class="col-sm-2 control-label">
+                    Mão de Obra
+                </label>
+                <div class="col-sm-10">
+                     <!-- <checkbox name="maodeobra" formControlName="maodeobra" class="form-control"></checkbox> -->
+                     <input type="checkbox" formControlName="maodeobra"/>
+                </div>
+            </div>
+
             <!-- UNIDADE -->
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{'has-error': submitted && form.unidade.errors}"> 
                 <label for="unidade" class="col-sm-2 control-label">Unidade</label>
                 <div class="col-sm-10">
                     <input type="text" name="unidade" formControlName="unidade" class="form-control"/>
                 </div>
+                <div *ngIf="submitted && form.unidade.errors" class="invalid-feedback">
+                    <div class="col-sm-2"></div>
+                    <div class="help-block col-sm-10">Unidade precisa ser informado!</div>
+                </div>
             </div>
             
             <!-- TIPO -->
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{'has-error': submitted && form.tipo.errors}">
                 <label for="tipo" class="col-sm-2 control-label">Tipo</label>
                 <div class="col-sm-10">
                     <select formControlName="tipo" class="form-control">
-                        <option *ngFor="let t of getTipoKeys()" [value]="tipoKeys[t]" [label]="t"></option>
+                        <option *ngFor="let t of getTipoKeys()" [value]="t" [label]="tipoKeys[t]"></option>
                     </select>
+                </div>
+                <div *ngIf="submitted && form.tipo.errors" class="invalid-feedback">
+                    <div class="col-sm-2"></div>
+                    <div class="help-block col-sm-10">Tipo Composição precisa ser informada!</div>
                 </div>
             </div>
             
             <!-- ESTADO -->
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{'has-error': submitted && form.estado.errors}">
                 <label for="estado" class="col-sm-2 control-label">Estado</label>
                 <div class="col-sm-10">
                     <select formControlName="estado" class="form-control">
                         <option *ngFor="let key of estadosKeys" [value]="key" [label]="estadosValue[key]"></option>
                     </select>
+                </div>
+                <div *ngIf="submitted && form.estado.errors" class="invalid-feedback">
+                    <div class="col-sm-2"></div>
+                    <div class="help-block col-sm-10">Estado precisa ser informada!</div>
                 </div>
             </div>
             
@@ -95,7 +119,7 @@
 
             <!-- <div class="form-group"> -->
             <button type="submit" class="btn btn-primary offset-2">
-                Criar Insumo
+                Finalizar
             </button>
             <button type="button" class="btn btn-danger" (click)="cancelar($Event)">
                 Cancelar

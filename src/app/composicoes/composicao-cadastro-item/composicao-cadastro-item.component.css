@@ -68,3 +68,27 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
+.passos{
+    font-size: 10px;
+    margin-top: -8px;
+}
+
+.modal-search{
+    margin-right: 0px;
+    margin-left: 0px;
+    border: 1px solid #043263;
+    padding: inherit;
+}
+
+.search-header{
+    background-color: #043263;
+    color: whitesmoke;
+    margin: -15px -15px 10px !important;
+    padding: inherit;
+    font-size: 1.3em;
+}
+
+.modal-search > div{
+    margin-right: -25px;
+}

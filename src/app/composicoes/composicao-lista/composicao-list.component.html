@@ -2,16 +2,16 @@
 <div class="row margin_0">
     <div class="header-content col-md-6 padding_0">
             <!-- <img src=".\assets\dist\img\InsumosIcon.png"> -->
-            <div class="icon"><i class="fa fa-cube"></i></div>
+            <div class="icon"><i class="fa fa-cubes"></i></div>
             <p class="subtitle-content">{{subtitle}}</p>
             <p class="title-content"><b>{{title}}</b></p>
     </div>
     <div class="col-md-6 padding_0">
         <div class="row">
-            <div class="col-md-3"><button class="btn btn-lg btn-primary btn_padrao btn_novo" (click)="novoInsumo()">NOVO</button></div>
+            <div class="col-md-3"><button class="btn btn-lg btn-primary btn_padrao btn_novo" (click)="novo()">NOVO</button></div>
             <div class="col-md-6">
               
-                  <form class="form-horizontal" [formGroup]="formSearch" (ngSubmit)="buscarInsumo()" style="width: 30vw;">
+                  <form class="form-horizontal" [formGroup]="formSearch" (ngSubmit)="buscar()" style="width: 30vw;">
                      
                         <div class="form-group form_search">
                           <input class="form-control input-sm input_search" formControlName="id" type="number" placeholder="Código"/>
@@ -44,17 +44,17 @@
                     
                   </tr>
 
-                  <tr style="height: 25px" *ngFor='let insumo of insumos; let i = index;'>
+                  <tr style="height: 25px" *ngFor='let composicao of composicoes; let i = index;'>
                     <td></td>
-                    <td>{{insumo.codigo}}</td>
-                    <td>{{insumo.descricao}}</td>
-                    <td>{{insumo.tipoinsumo}}</td>
-                    <td>{{insumo.unidademedida}}</td>
-                    <td>{{insumo.valornaodesonerado}}</td>
-                    <td>{{insumo.valordesonerado}}</td>
+                    <td>{{composicao.codigo}}</td>
+                    <td>{{composicao.descricao}}</td>
+                    <td>{{composicao.tipoinsumo}}</td>
+                    <td>{{composicao.unidademedida}}</td>
+                    <td>{{composicao.valornaodesonerado}}</td>
+                    <td>{{composicao.valordesonerado}}</td>
                     <td style="text-align: center">
-                      <button class="btn btn-xs btn-warning" (click)="editar(insumo.codigo)" style="margin-right: 2px">EDITAR</button>
-                      <button class="btn btn-xs btn-danger" (click)="excluir(insumo.codigo, i)">EXCLUIR</button>
+                      <button class="btn btn-xs btn-warning" (click)="editar(composicao.codigo)" style="margin-right: 2px">EDITAR</button>
+                      <button class="btn btn-xs btn-danger" (click)="excluir(composicao.codigo, i)">EXCLUIR</button>
                     </td>
                     <td></td>
                   </tr> 

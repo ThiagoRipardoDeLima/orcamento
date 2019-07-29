@@ -1,0 +1,123 @@
+<breadcumb></breadcumb>
+<div class="row margin_0">
+    <div class="header-content col-md-6 padding_0">
+            <!-- <img src=".\assets\dist\img\InsumosIcon.png"> -->
+            <div class="icon"><i class="fa fa-cubes"></i></div>
+            <p class="subtitle-content">{{subtitle}}</p>
+            <p class="title-content"><b>{{title}}</b></p>
+            <p class="passos">{{passos}}</p>
+    </div>
+    <div class="col-md-6 padding_0">
+        <div class="row">
+            <div class="col-md-3"><button class="btn btn-lg btn-primary btn_padrao btn_novo" data-toggle="modal" data-target="#modal-default">NOVO</button></div>
+            <div class="col-md-6">
+              
+                  <!-- <form class="form-horizontal" [formGroup]="formSearch" (ngSubmit)="buscar()" style="width: 30vw;">
+                     
+                        <div class="form-group form_search">
+                          <input class="form-control input-sm input_search" formControlName="id" type="number" placeholder="Código"/>
+                          <input class="form-control input-sm input_search" formControlName="descricao" type="text" placeholder="Descrição"/>
+                          <input class="form-control input-sm input_search" formControlName="tipo" type="text" placeholder="Tipo"/>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn_padrao btn_search">BUSCAR</button>
+                     
+                  </form> -->
+            </div>
+        </div>
+    </div>        
+</div>
+<br>
+<div class="box box-warning">
+       
+              <!-- /.box-header -->
+              <div class="box-body">
+                <table class="table table-bordered">
+                  <tr>
+                    <th style="width: 1vw"></th>
+                    <th style="width: 10vw">CÓDIGO</th>
+                    <th style="width: 40vw">BANCO</th>
+                    <th style="width: 5vw">TIPO</th>
+                    <th style="width: 5vw">UNIDADE</th>
+                    <th style="width: 10vw">CRIADO EM</th>
+                    <th style="width: 10vw;">VALOR NÃO DESONERADO</th>
+                    <th style="width: 10vw">VALOR DESONERADO</th>
+                    <th style="width: 15vw"></th>
+                    
+                  </tr>
+
+                  <tr style="height: 25px" *ngFor='let composicao of composicaoItem; let i = index;' (click)="teste(composicao.codigoitem,i)">
+                    <td></td>
+                    <td>{{composicao.codigoitem}}</td>
+                    <td>{{composicao.tipobanco}}</td>
+                    <td>{{composicao.tipoinsumo}}</td>
+                    <td>{{composicao.unidademedida}}</td>
+                    <td>{{composicao.criadoem}}</td>
+                    <td>{{composicao.valornaodesonerado}}</td>
+                    <td>{{composicao.valordesonerado}}</td>
+                    <td style="text-align: center">
+                      <button class="btn btn-xs btn-warning" (click)="editar(composicao.codigo)" style="margin-right: 2px">EDITAR</button>
+                      <button class="btn btn-xs btn-danger" (click)="excluir(composicao.codigo, i)">EXCLUIR</button>
+                    </td>
+                    <td></td>
+                  </tr> 
+                </table>
+
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+                </ul>
+              </div>
+</div>
+<!-- /.box -->
+
+<!-- MODAL PESQUISA class="modal fade" -->
+<div  id="modal-default" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">{{titleModal}}</h4>
+        </div>
+        <div class="modal-body">
+
+            <div class="row modal-search">
+                <div class="search-header">Pesquisa</div>
+                <div class="col-xs-3">
+                    <label>Banco</label>
+                    <select class="form-control">
+                        <option *ngFor="let k of getTipoBanco()"  [value]="k" [label]="tipoBanco[k]"></option>
+                    </select>
+                  <!-- <input type="text" class="form-control" placeholder=".col-xs-3"> -->
+                </div>
+                <div class="col-xs-3">
+                    <label>Código</label>
+                    <input type="number" placeholder="Digite para pesquisar..." class="form-control"/>
+                </div>
+                <div class="col-xs-7">
+                    <label>Código</label>
+                    <input type="text" placeholder="Digite para pesquisar..."class="form-control"/>
+                </div>
+              </div>
+
+
+
+      
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="novo()" data-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->

@@ -14,8 +14,10 @@ import { BasicAuthInterceptor } from './_helper/basic-auth.interceptor';
 import { FakeBackendInterceptor } from './_helper/backend';
 import { InsumoAddComponent } from './insumos/insumo-cadastro/insumo-cadastro.component';
 import { InsumoListComponent } from './insumos/insumo-lista/insumo.list.component';
-
-
+import { HomeBreadcumb } from './home/home-breadcumb/home-breadcumb.component';
+import { ComposicaoListComponent } from './composicoes/composicao-lista/composicao-list.component';
+import { ComposicaoAddComponent } from './composicoes/composicao-cadastro/composicao-cadastro.component';
+import{ ComposicaoAddItemComponent } from './composicoes/composicao-cadastro-item/composicao-cadastro-item.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,11 @@ import { InsumoListComponent } from './insumos/insumo-lista/insumo.list.componen
     HomeComponent,
     Error404Component,
     InsumoAddComponent,
-    InsumoListComponent
+    InsumoListComponent,
+    ComposicaoListComponent,
+    ComposicaoAddComponent,
+    ComposicaoAddItemComponent,
+    HomeBreadcumb
   ],
   imports: [
     BrowserModule,

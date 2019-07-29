@@ -1,29 +1,28 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Insumo } from 'src/app/_models/insumo';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { InsumoService } from 'src/app/_services/insumo.service';
 import { Response } from '../../_helper/response';
-
+import { Composicao } from '../../_models/composicao'
+import { ComposicaoService } from '../../_services/composicao.service';
 
 @Component({
-    selector:'insumo-list',
-    templateUrl:'insumo-list.component.html',
-    styleUrls:['./insumo-list.component.css']
+    selector:'composicao-list',
+    templateUrl:'composicao-list.component.html',
+    styleUrls:['./composicao-list.component.css']
 })
-export class InsumoListComponent{
+export class ComposicaoListComponent{
     private title = '';
     private subtitle = '';
-    private insumos: Insumo[] = new Array();
+    private composicao: Composicao[] = new Array();
     private formSearch: FormGroup;
     
     constructor(private router: Router,
                 private formBuilder: FormBuilder,
-                private insumoService: InsumoService){}
+                private composicaoService: ComposicaoService){}
 
     ngOnInit(){
-        this.title = 'INSUMOS';
-        this.subtitle = 'PESQUISA DE INSUMOS';
+        this.title = 'COMPOSIÇÕES';
+        this.subtitle = 'PESQUISA DE COMPOSIÇÕES';
         this.formInit();
     }
 
@@ -37,45 +36,45 @@ export class InsumoListComponent{
         });
     }
 
-    novoInsumo(){
-        this.router.navigate(['/insumo/','']);
-    }
-
-    buscarInsumo(){
+    buscar(){
         //pega valores da busca
         let id          = this.f.id;
         let description = this.f.descricao;
         let type        = this.f.tipo;
         
         //limpa registros para nova busca
-        this.insumos = null;
+        this.composicao = null;
 
         //efetuamos a busca conforme o filtro preenchido
         if(id != 0){
-            this.insumoService.getInsumo(id).subscribe(res => this.insumos.push(res));
+            this.composicaoService.getComposicao(id).subscribe(res => this.composicao.push(res));
             return
         }
         if(description != ''){
-            this.insumoService.getInsumoByDescription(description).subscribe(res => this.insumos = res)
+            this.composicaoService.getComposicaoByDescription(description).subscribe(res => this.composicao = res)
             return
         }
         if(type != ''){
-            this.insumoService.getInsumoByType(type).subscribe(res => this.insumos = res);
+            this.composicaoService.getComposicaoByType(type).subscribe(res => this.composicao = res);
             return
         }
         //nenhum filtro informado, busca todos
-        this.insumoService.getInsumos().subscribe(res => this.insumos = res);
+        this.composicaoService.getComposicoes().subscribe(res => this.composicao = res);
 
     }
 
+    novo(){
+        this.router.navigate(['/composicao/','']);
+    }
+
     edita(id: number){
-        this.router.navigate(['/insumo/',id]);
+        this.router.navigate(['/composicao/',id]);
     }
 
     excluir(id:number, index:number){
         if(confirm("Deseja realmente excluir esse registro?")){
             //chama servico para excluir o registro
-            this.insumoService.deleteInsumo(id).subscribe(response => {
+            this.composicaoService.deleteComposicao(id).subscribe(response => {
 
                 //Pega retorno do servico
                 let res:Response = <Response>response;
@@ -84,7 +83,7 @@ export class InsumoListComponent{
                 //mostra mensagem retornada e remove o registro da tabela
                 if(res.codigo == 1){
                     alert(res.mensagem);
-                    this.insumos.splice(index,1);
+                    this.composicao.splice(index,1);
                     return;
                 }
                 //0 = EXCEPTION GERADA NO SERVIDOR
