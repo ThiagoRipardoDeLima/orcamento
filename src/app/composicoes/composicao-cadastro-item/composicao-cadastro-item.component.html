@@ -8,22 +8,11 @@
             <p class="passos">{{passos}}</p>
     </div>
     <div class="col-md-6 padding_0">
-        <div class="row">
-            <div class="col-md-3"><button class="btn btn-lg btn-primary btn_padrao btn_novo" data-toggle="modal" data-target="#modal-default">NOVO</button></div>
-            <div class="col-md-6">
-              
-                  <!-- <form class="form-horizontal" [formGroup]="formSearch" (ngSubmit)="buscar()" style="width: 30vw;">
-                     
-                        <div class="form-group form_search">
-                          <input class="form-control input-sm input_search" formControlName="id" type="number" placeholder="Código"/>
-                          <input class="form-control input-sm input_search" formControlName="descricao" type="text" placeholder="Descrição"/>
-                          <input class="form-control input-sm input_search" formControlName="tipo" type="text" placeholder="Tipo"/>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary btn_padrao btn_search">BUSCAR</button>
-                     
-                  </form> -->
-            </div>
+        <div class="row buttons-content">
+          <div><button class="btn btn-flat btn-danger btn_cancelar">CANCELAR</button></div>
+          <div class=""><button class="btn btn-lg btn-flat btn_padrao btn_composicao" data-toggle="modal" data-target="#modal-default">COMPOSIÇÃO</button></div>
+          <div class=""><button class="btn btn-lg btn-flat btn_padrao btn_insumo" data-toggle="modal" data-target="#modal-default">INSUMO</button></div>
+          <div class=""><button class="btn btn-lg btn-flat btn_search btn_padrao">FINALIZAR</button></div>
         </div>
     </div>        
 </div>
@@ -35,31 +24,34 @@
                 <table class="table table-bordered">
                   <tr>
                     <th style="width: 1vw"></th>
-                    <th style="width: 10vw">CÓDIGO</th>
-                    <th style="width: 40vw">BANCO</th>
                     <th style="width: 5vw">TIPO</th>
+                    <th style="width: 5vw">BANCO</th>
+                    <th style="width: 10vw">CÓDIGO</th>
+                    <th style="width: 40vw">DESCRIÇÃO</th>
+                    <th style="width: 5vw">CLASSE</th>
                     <th style="width: 5vw">UNIDADE</th>
-                    <th style="width: 10vw">CRIADO EM</th>
-                    <th style="width: 10vw;">VALOR NÃO DESONERADO</th>
-                    <th style="width: 10vw">VALOR DESONERADO</th>
+                    <th style="width: 10vw;text-align: right">QUANTIDADE</th>
+                    <th style="width: 10vw;text-align: right">VALOR NÃO DESONERADO</th>
+                    <th style="width: 10vw;text-align: right">VALOR DESONERADO</th>
                     <th style="width: 15vw"></th>
-                    
                   </tr>
 
-                  <tr style="height: 25px" *ngFor='let composicao of composicaoItem; let i = index;' (click)="teste(composicao.codigoitem,i)">
+                  <tr style="height: 25px" *ngFor="let c of listaItensComposicao; let i = index;">
                     <td></td>
-                    <td>{{composicao.codigoitem}}</td>
-                    <td>{{composicao.tipobanco}}</td>
-                    <td>{{composicao.tipoinsumo}}</td>
-                    <td>{{composicao.unidademedida}}</td>
-                    <td>{{composicao.criadoem}}</td>
-                    <td>{{composicao.valornaodesonerado}}</td>
-                    <td>{{composicao.valordesonerado}}</td>
+                    <td>{{c.tipoitem}}</td>
+                    <td>{{c.tipobanco}}</td>
+                    <td>{{c.coditem}}</td>
+                    <td>{{c.descricao}}</td>
+                    <td>{{c.tipoclasse}}</td>
+                    <td style="text-align: center">{{c.unidade}}</td>
+                    <td style="text-align: right">{{c.quantidade}}</td>
+                    <td style="text-align: right">{{c.valornaodesonerado | currency:'BRL'}}</td>
+                    <td style="text-align: right">{{c.valordesonerado | currency:'BRL'}}</td>
                     <td style="text-align: center">
-                      <button class="btn btn-xs btn-warning" (click)="editar(composicao.codigo)" style="margin-right: 2px">EDITAR</button>
-                      <button class="btn btn-xs btn-danger" (click)="excluir(composicao.codigo, i)">EXCLUIR</button>
+                      <button class="btn btn-xs btn-warning" (click)="editar(i)" data-toggle="modal" data-target="#modal-default" style="margin-right: 2px">EDITAR</button>
+                      <button class="btn btn-xs btn-danger" (click)="excluir(c.coditem, i)">EXCLUIR</button>
                     </td>
-                    <td></td>
+                    
                   </tr> 
                 </table>
 
@@ -88,32 +80,83 @@
         </div>
         <div class="modal-body">
 
+            <!-- CABECALHO DE PESQUISA -->
             <div class="row modal-search">
-                <div class="search-header">Pesquisa</div>
-                <div class="col-xs-3">
-                    <label>Banco</label>
-                    <select class="form-control">
-                        <option *ngFor="let k of getTipoBanco()"  [value]="k" [label]="tipoBanco[k]"></option>
-                    </select>
-                  <!-- <input type="text" class="form-control" placeholder=".col-xs-3"> -->
-                </div>
-                <div class="col-xs-3">
-                    <label>Código</label>
-                    <input type="number" placeholder="Digite para pesquisar..." class="form-control"/>
-                </div>
-                <div class="col-xs-7">
-                    <label>Código</label>
-                    <input type="text" placeholder="Digite para pesquisar..."class="form-control"/>
-                </div>
+                <div class="search-header">Filtro</div>
+                <form [formGroup]="form">
+                    <div class="col-xs-3">
+                        <label>Banco</label>
+                        <select class="form-control" formControlName="tipobanco">
+                            <option *ngFor="let k of getTipoBanco()"  [value]="k" [label]="tipoBanco[k]"></option>
+                        </select>
+                      <!-- <input type="text" class="form-control" placeholder=".col-xs-3"> -->
+                    </div>
+                    <div class="col-xs-3">
+                        <label>Código</label>
+                        <input type="number" placeholder="Digite para pesquisar..." formControlName="codigo" class="form-control"/>
+                    </div>
+                    <div class="col-xs-7">
+                        <label>Descrição</label>
+                        <input type="text" placeholder="Digite para pesquisar..." formControlName="descricao" class="form-control" (keyup)="pesquisaItem()"/>
+                    </div>
+                </form>
+                
+            </div>
+              <!--  -->
+              <br>
+              <!-- ITEM ESCOLHIDO -->
+              <div class="row modal-search" *ngIf="isSelecionado">
+                  <div class="search-header">Item Selecionado</div>
+
+                  <form class="form-horizontal" [formGroup]="form">
+                      <div class="form-group">
+                          <label class="col-xs-6">Descrição</label>
+                          <label class="col-xs-2">Quantidade</label>
+                          <label class="col-xs-2">Valor Desonerado</label>
+                          <label class="col-xs-2">Valor não Desonerado</label>
+                      </div>
+
+                      <div class="form-group">
+                          <label class="col-xs-6">{{itemSelecionado.descricao}}</label>
+                          <input type="number" class="col-xs-2" formControlName="quantidade" placeholder="Quantidade.."/>
+                          <label class="col-xs-2">{{itemSelecionado.valordesonerado | currency:'BRL'}}</label>
+                          <label class="col-xs-2">{{itemSelecionado.valornaodesonerado | currency:'BRL'}}</label>
+                      </div>
+                  </form>
+              </div>
+              <!--  -->
+              <br>
+              <!-- LISTA DE ITEMS PARA ESCOLHA -->
+              <div class="row modal-search" *ngIf="!isSelecionado">
+                  <div class="search-header">Pesquisa</div>
+                  <div class="box-body table-responsive no-padding">
+                      <table class="table table-hover">
+                        <tr>
+                          <th>Código</th>
+                          <th>Descrição</th>
+                          <th>Unidade</th>
+                          <th>Valor Não Desonerado</th>
+                          <th>Valor Desonerado</th>
+                        </tr>
+                        <tr *ngFor="let item of composicaoModal; let i = index" (click)="selecionarItem(item)">
+                          <td>{{item.coditem}}</td>
+                          <td>{{item.descricao}}</td>
+                          <td>{{item.unidade}}</td>
+                          <td>{{item.valornaodesonerado | currency:'BRL'}}</td>
+                          <td>{{item.valordesonerado | currency:'BRL'}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
               </div>
 
 
-
+              <!--  -->
       
-        </div>
+       
         <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="novo()" data-dismiss="modal">Save changes</button>
+          <button type="button" class="btn btn-default pull-left" (click)="limparFormularioPesquisa()" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" (click)="adicionarItem()" data-dismiss="modal">Adicionar</button>
         </div>
       </div>
       <!-- /.modal-content -->

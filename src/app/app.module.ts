@@ -1,9 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { registerLocaleData } from '@angular/common';
+import ptBr from '@angular/common/locales/pt';
 
 import { LoginComponent } from './login/login.component';
 import { OrcamentoHeaderComponent } from './home/home-header/orcamento-header.component';
@@ -18,6 +20,8 @@ import { HomeBreadcumb } from './home/home-breadcumb/home-breadcumb.component';
 import { ComposicaoListComponent } from './composicoes/composicao-lista/composicao-list.component';
 import { ComposicaoAddComponent } from './composicoes/composicao-cadastro/composicao-cadastro.component';
 import{ ComposicaoAddItemComponent } from './composicoes/composicao-cadastro-item/composicao-cadastro-item.component';
+registerLocaleData(ptBr);
+
 
 @NgModule({
   declarations: [
@@ -43,7 +47,8 @@ import{ ComposicaoAddItemComponent } from './composicoes/composicao-cadastro-ite
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
-    FakeBackendInterceptor
+    FakeBackendInterceptor,
+    {provide:LOCALE_ID, useValue:"pt"}
   ],
   bootstrap: [AppComponent]
 })

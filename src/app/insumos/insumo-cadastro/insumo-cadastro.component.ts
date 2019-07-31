@@ -125,7 +125,7 @@ export class InsumoAddComponent{
     cancelar(e: Event){
         // console.log('Click ' + e);
         this.formularioInsumos.reset();
-        this.router.navigate(['/insumo']);
+        this.router.navigate(['/insumos']);
     }
 
     contador(){

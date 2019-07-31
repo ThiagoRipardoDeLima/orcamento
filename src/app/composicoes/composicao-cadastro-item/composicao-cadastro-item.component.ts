@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ComposicaoItem } from 'src/app/_models';
-import { ComposicaoItemService } from 'src/app/_services/composicao-item.service';
-import { TipoBanco } from 'src/app/_helper/Enums';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { ComposicaoItem, Composicao } from '../../_models';
+import { ComposicaoItemService } from '../../_services/composicao-item.service';
+import { TipoBanco, TipoItem, TipoInsumo, TipoComposicao } from '../../_helper/Enums';
+
 
 @Component({
     selector:'composicao-cadastro-item',
@@ -15,19 +16,19 @@ export class ComposicaoAddItemComponent{
     private subtitle = '';
     private passos = 'ETAPA 2/2';
     
-    private composicaoItem: ComposicaoItem[] = new Array();
-    private formSearch: FormGroup;
-    
+    private listaItensComposicao: ComposicaoItem[] = new Array();
+
     //modal
-    private modalDisplay;
-    private modalClass;
-    private titleModal;
+    private form: FormGroup;
+    private composicaoModal: ComposicaoItem[] = new Array();
+    private itemSelecionado: ComposicaoItem;
+    private titleModal = 'Pesquisar Composição';
     private tipoBanco = TipoBanco;
     getTipoBanco(): Array<string>{
         var tipoBancoKey = Object.keys(TipoBanco);
         return tipoBancoKey.slice(0,tipoBancoKey.length/2);
     }
-
+    isSelecionado = false;
 
     constructor(private router: Router,
                 private formBuilder: FormBuilder,
@@ -35,11 +36,6 @@ export class ComposicaoAddItemComponent{
                 private activatedRouter: ActivatedRoute){}
 
     ngOnInit(){
-        console.log(this.tipoBanco);
-        console.log(this.getTipoBanco());
-        this.modalClass = true;
-        this.modalDisplay = 'none';
-    
         let id = 0;
         this.activatedRouter.params.subscribe(parametro=>{
             id = parametro["id"];
@@ -54,101 +50,94 @@ export class ComposicaoAddItemComponent{
         this.title = 'NOVA COMPOSIÇÃO';
         this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE COMPOSIÇÃO';
 
-        if(this.composicaoItem.length > 0){
+        if(this.listaItensComposicao.length > 0){
             this.title = 'ALTERAR COMPOSIÇÃO';
             this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE COMPOSIÇÃO';
         }
             
+        this.formInit();
+    }
+
+    get f(){return this.form.value}
+
+    formInit(){
+    
+        this.form = this.formBuilder.group({
+            descricao:[''],
+            codigo:[],
+            tipobanco:[0],
+            quantidade:[1]
+        });
        
-        let item = new ComposicaoItem();
-        item.codigoitem = 1;
-        item.tipobanco = TipoBanco[TipoBanco.SINAPI];
-        this.composicaoItem.push(item);
-        this.composicaoItem.push(item);
-        this.composicaoItem.push(item);
-
-        // this.formInit();
     }
 
-    teste(codigo: number, index: number){
-        alert('Param.: ' + codigo + ' - ' + index);
+    adicionarItem(){
+        this.listaItensComposicao.forEach(itens => {
+            if(itens.coditem === this.itemSelecionado.coditem){
+                console.log('Item: ' + itens.coditem);
+                itens.quantidade = this.f.quantidade;
+                itens.valordesonerado *= this.f.quantidade;
+                itens.valornaodesonerado *= this.f.quantidade;
+                this.f.quantidade = 0;
+            }
+           
+        })
+
+        if(this.f.quantidade == 0){
+            return;
+        }
+
+        this.itemSelecionado.quantidade = this.f.quantidade;
+        this.itemSelecionado.valordesonerado *= this.f.quantidade;
+        this.itemSelecionado.valornaodesonerado *= this.f.quantidade;
+        this.listaItensComposicao.push(this.itemSelecionado);
+        this.limparFormularioPesquisa();
     }
 
-    // get f(){return this.formSearch.value}
-
-    // formInit(){
-    //     this.formSearch = this.formBuilder.group({
-    //         id:[''],
-    //         descricao:[''],
-    //         tipo:['']
-    //     });
-    // }
-
-    // buscar(){
-    //     //pega valores da busca
-    //     let id          = this.f.id;
-    //     let description = this.f.descricao;
-    //     let type        = this.f.tipo;
-        
-    //     //limpa registros para nova busca
-    //     this.composicao = null;
-
-    //     //efetuamos a busca conforme o filtro preenchido
-    //     if(id != 0){
-    //         this.composicaoItemService.getComposicao(id).subscribe(res => this.composicao.push(res));
-    //         return
-    //     }
-    //     if(description != ''){
-    //         this.composicaoItemService.getComposicaoByDescription(description).subscribe(res => this.composicao = res)
-    //         return
-    //     }
-    //     if(type != ''){
-    //         this.composicaoItemService.getComposicaoByType(type).subscribe(res => this.composicao = res);
-    //         return
-    //     }
-    //     //nenhum filtro informado, busca todos
-    //     this.composicaoItemService.getComposicoes().subscribe(res => this.composicao = res);
-
-    // }
-
-    novo(){
-        // this.router.navigate(['/composicao/','']);
-
-        let item = new ComposicaoItem();
-        item.codigoitem = 1;
-        item.tipobanco = TipoBanco[TipoBanco.SINAPI];
-        this.composicaoItem.push(item);
-        this.modalDisplay = 'none';
-        this.modalClass=true;
+    pesquisaItem(){
+        this.composicaoModal = [];
+        this.isSelecionado = false;
+        for(var i = 1; i < 10; i++){
+            let itemComp = new ComposicaoItem();
+            itemComp.coditem = i;
+            itemComp.descricao = 'teste de cadastro ' + i;
+            itemComp.unidade = 'M';
+            itemComp.tipobanco = TipoBanco[TipoBanco.SINAPI];
+            itemComp.tipoclasse = TipoInsumo[TipoInsumo.Equipamento];
+            if(this.f.tipoBanco == TipoBanco.SINAPI){
+                itemComp.tipoclasse = TipoComposicao[TipoComposicao.CANT];
+            }
+            itemComp.tipoitem = TipoItem[TipoItem.INSUMO];
+            
+            itemComp.valordesonerado = 10000
+            itemComp.valornaodesonerado = 15
+            this.composicaoModal.push(itemComp);
+        }
 
     }
 
-    // edita(id: number){
-    //     this.router.navigate(['/composicao/',id]);
-    // }
+    selecionarItem(item: ComposicaoItem){
+        this.isSelecionado = true;
+        this.itemSelecionado = this.composicaoModal[this.composicaoModal.indexOf(item)]; 
+    }
 
-    // excluir(id:number, index:number){
-    //     if(confirm("Deseja realmente excluir esse registro?")){
-    //         //chama servico para excluir o registro
-    //         this.composicaoItemService.deleteComposicao(id).subscribe(response => {
+    limparFormularioPesquisa(){
+        this.formInit();
+        this.f.codigo = null,
+        this.f.descricao = null,
+        this.itemSelecionado = new ComposicaoItem();
+    }
+    
+    editar(index: number){
+        this.itemSelecionado = this.listaItensComposicao[index];
+        console.log(this.itemSelecionado);
+        this.isSelecionado = true;
+    }
 
-    //             //Pega retorno do servico
-    //             let res:Response = <Response>response;
+    excluir(id:number, index:number){
+        if(confirm("Deseja realmente excluir esse registro?")){
+            this.listaItensComposicao.splice(index,1);
+        }
+    }
 
-    //             //1 = SUCESSO
-    //             //mostra mensagem retornada e remove o registro da tabela
-    //             if(res.codigo == 1){
-    //                 alert(res.mensagem);
-    //                 this.composicao.splice(index,1);
-    //                 return;
-    //             }
-    //             //0 = EXCEPTION GERADA NO SERVIDOR
-    //             alert(res.mensagem);
-    //         },
-    //         (erro) => {
-    //             //ERROS NAO TRATADOS
-    //             alert(erro);
-    //         })
-    //     }
-    // }
 }

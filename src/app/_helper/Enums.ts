@@ -79,3 +79,7 @@
         'SINAPI'
     }
 
+    export enum TipoItem{
+        'INSUMO',
+        'COMPOSIÇÃO'
+    }
