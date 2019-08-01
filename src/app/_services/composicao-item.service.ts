@@ -35,7 +35,7 @@ export class ComposicaoItemService{
 
 
     /** ADICIONA UMA NOVO ITEM A COMPOSICAO */
-    addComposicaoItem(composicaoItem: ComposicaoItem){
+    addComposicaoItem(composicaoItem: ComposicaoItem[]){
 
         return this.http.post<any>(this.baseUrlService, JSON.stringify(composicaoItem), this.options)
                     .pipe(map(res => {
@@ -53,7 +53,7 @@ export class ComposicaoItemService{
     }
 
     /** ATUALIZA INFORMAÇÕES DE UM USUARIO */
-    updateComposicao(composicaoItem: ComposicaoItem){
+    updateComposicaoItem(composicaoItem: ComposicaoItem[]){
         return this.http.put(this.baseUrlService, JSON.stringify(composicaoItem),this.options)
         .pipe(map(res => {
             return res

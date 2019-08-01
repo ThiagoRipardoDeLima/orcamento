@@ -89,7 +89,7 @@ export class ComposicaoAddComponent{
         this.composicao.observacao          = dadosFormulario.observacao;
         this.composicao.criadoem            = new Date();
 
-        alert(`Formulário: \n ${JSON.stringify(this.composicao)}`);
+        // alert(`Formulário: \n ${JSON.stringify(this.composicao)}`);
         if (this.composicao.codigo > 0){
             //chama servico para atualizar composicao
             this.composicaoService
@@ -126,7 +126,7 @@ export class ComposicaoAddComponent{
             },
             error => {
                 alert('Serviço indisponível no momento. Contate o administrador do sistema e informe o código(' + error.status + ' - ' + error.statusText + ').');
-                this.router.navigate(['/composicao/item',1]);
+                this.router.navigate(['/composicao/item/',1]);
             });
         }
         

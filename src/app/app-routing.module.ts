@@ -17,7 +17,7 @@ const routes: Routes = [
   {path:'insumos', component: InsumoListComponent, canActivate:[AuthGuard]},
   {path:'composicao/item/:id', component: ComposicaoAddItemComponent, canActivate:[AuthGuard]},
   {path:'composicao/:id', component: ComposicaoAddComponent, canActivate:[AuthGuard]},
-  {path:'composicoes', component: ComposicaoAddItemComponent, canActivate:[AuthGuard]},
+  {path:'composicoes', component: ComposicaoListComponent, canActivate:[AuthGuard]},
   {path:'login', component: LoginComponent},
   {path:'', redirectTo: 'home', pathMatch:'full'},
   {path:'**', component: Error404Component},

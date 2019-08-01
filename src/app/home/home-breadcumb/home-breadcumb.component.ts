@@ -13,7 +13,11 @@ import { ActivatedRoute } from '@angular/router';
         this.rota = this.route.routeConfig.path;
         //Primeira letra maiuscula
         
-        this.rota = this.rota.charAt(0).toLocaleUpperCase() + this.rota.slice(1,this.rota.length).replace('/:id','');
+        this.rota = this.rota.charAt(0).toLocaleUpperCase() + 
+                    this.rota.slice(1,this.rota.length)
+                      .replace('/:id','')
+                      .replace('/item/','')
+                      .replace('/item','');
     }
 
 

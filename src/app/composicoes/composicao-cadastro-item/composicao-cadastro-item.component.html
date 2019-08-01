@@ -9,10 +9,10 @@
     </div>
     <div class="col-md-6 padding_0">
         <div class="row buttons-content">
-          <div><button class="btn btn-flat btn-danger btn_cancelar">CANCELAR</button></div>
-          <div class=""><button class="btn btn-lg btn-flat btn_padrao btn_composicao" data-toggle="modal" data-target="#modal-default">COMPOSIÇÃO</button></div>
-          <div class=""><button class="btn btn-lg btn-flat btn_padrao btn_insumo" data-toggle="modal" data-target="#modal-default">INSUMO</button></div>
-          <div class=""><button class="btn btn-lg btn-flat btn_search btn_padrao">FINALIZAR</button></div>
+          <div><button class="btn btn-flat btn-danger btn_cancelar" (click)="cancelar()">CANCELAR</button></div>
+          <div class=""><button class="btn btn-lg btn-flat btn_padrao btn_composicao" data-toggle="modal" data-target="#modal-default" (click)="atualizaTitleModal('Composição','C')">COMPOSIÇÃO</button></div>
+          <div class=""><button class="btn btn-lg btn-flat btn_padrao btn_insumo" data-toggle="modal" data-target="#modal-default" (click)="atualizaTitleModal('Insumo','I')">INSUMO</button></div>
+          <div class=""><button class="btn btn-lg btn-flat btn_search btn_padrao" (click)="finalizarCadastro()">FINALIZAR</button></div>
         </div>
     </div>        
 </div>
@@ -76,7 +76,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">{{titleModal}}</h4>
+          <h4 class="modal-title">Pesquisar {{titleModal}}</h4>
         </div>
         <div class="modal-body">
 
