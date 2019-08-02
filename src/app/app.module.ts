@@ -20,6 +20,12 @@ import { HomeBreadcumb } from './home/home-breadcumb/home-breadcumb.component';
 import { ComposicaoListComponent } from './composicoes/composicao-lista/composicao-list.component';
 import { ComposicaoAddComponent } from './composicoes/composicao-cadastro/composicao-cadastro.component';
 import{ ComposicaoAddItemComponent } from './composicoes/composicao-cadastro-item/composicao-cadastro-item.component';
+import { ClienteListaComponent } from './clientes/cliente-lista/cliente-lista.component';
+import { ClienteCadastroComponent } from './clientes/cliente-cadastro/cliente-cadastro.component';
+import { UsuarioListaComponent } from './usuarios/usuario-lista/usuario-lista.component';
+import { UsuarioCadastroComponent } from './usuarios/usuario-cadastro/usuario-cadastro.component';
+import { OrcamentoListaComponent } from './orcamentos/orcamento-lista/orcamento-lista.component';
+
 registerLocaleData(ptBr);
 
 
@@ -36,7 +42,12 @@ registerLocaleData(ptBr);
     ComposicaoListComponent,
     ComposicaoAddComponent,
     ComposicaoAddItemComponent,
-    HomeBreadcumb
+    HomeBreadcumb,
+    ClienteListaComponent,
+    ClienteCadastroComponent,
+    UsuarioListaComponent,
+    UsuarioCadastroComponent,
+    OrcamentoListaComponent
   ],
   imports: [
     BrowserModule,

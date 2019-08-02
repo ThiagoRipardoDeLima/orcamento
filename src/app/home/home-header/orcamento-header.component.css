@@ -3,3 +3,9 @@
     width: 230px;
     margin-left: -16px;
 }
+
+.teste{
+    padding: 5px 15px;
+    display: flex;
+    flex-direction:column;
+}

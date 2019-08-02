@@ -83,3 +83,8 @@
         'INSUMO',
         'COMPOSIÇÃO'
     }
+
+    export enum TipoStatus{
+        'ATIVO',
+        'INATIVO'
+    }

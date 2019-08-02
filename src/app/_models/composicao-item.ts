@@ -1,5 +1,5 @@
 export class ComposicaoItem{
-    codcomposicao:       number = 0;
+    codcomposicao:      number = 0;
     coditem:            number = 0;
     descricao:          string = null;
     maodeobra:          boolean = false;

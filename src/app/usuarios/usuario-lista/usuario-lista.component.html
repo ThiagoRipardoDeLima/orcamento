@@ -2,21 +2,21 @@
 <div class="row margin_0">
     <div class="header-content col-md-6 padding_0">
             <!-- <img src=".\assets\dist\img\InsumosIcon.png"> -->
-            <div class="icon"><i class="fa fa-cube"></i></div>
+            <div class="icon"><i class="fa fa-users"></i></div>
             <p class="subtitle-content">{{subtitle}}</p>
             <p class="title-content"><b>{{title}}</b></p>
     </div>
     <div class="col-md-6 padding_0">
         <div class="row">
-            <div class="col-md-3" style="margin-left: 45px"><button class="btn btn-lg btn-primary btn_padrao btn_novo" (click)="novoInsumo()">NOVO</button></div>
+            <div class="col-md-3" style="margin-left: 45px"><button class="btn btn-lg btn-primary btn_padrao btn_novo" (click)="novoUsuario()">NOVO</button></div>
             <div class="col-md-6" style="margin-left: -35px">
               
-                  <form class="form-horizontal" [formGroup]="formSearch" (ngSubmit)="buscarInsumo()" style="width: 30vw;">
+                  <form class="form-horizontal" [formGroup]="formSearch" (ngSubmit)="buscarUsuario()" style="width: 30vw;">
                      
                         <div class="form-group form_search">
                           <input class="form-control input-sm input_search" formControlName="id" type="number" placeholder="Código"/>
-                          <input class="form-control input-sm input_search" formControlName="descricao" type="text" placeholder="Descrição"/>
-                          <input class="form-control input-sm input_search" formControlName="tipo" type="text" placeholder="Tipo"/>
+                          <input class="form-control input-sm input_search" formControlName="login" type="text" placeholder="Login..."/>
+                          <input class="form-control input-sm input_search" formControlName="nome" type="text" placeholder="Nome..."/>
                         </div>
                         
                         <button type="submit" class="btn btn-primary btn_padrao btn_search">BUSCAR</button>
@@ -34,27 +34,23 @@
                 <table class="table table-bordered">
                   <tr>
                     <th style="width: 1vw"></th>
-                    <th style="width: 10vw">CÓDIGO</th>
-                    <th style="width: 40vw">DESCRIÇÃO</th>
-                    <th style="width: 5vw">TIPO</th>
-                    <th style="width: 5vw">UNIDADE</th>
-                    <th style="width: 10vw;">VALOR NÃO DESONERADO</th>
-                    <th style="width: 10vw">VALOR DESONERADO</th>
-                    <th style="width: 15vw"></th>
-                    
+                    <th style="width: 30vw">NOME</th>
+                    <th style="width: 30vw">LOGIN</th>
+                    <th style="width: 20vw">EMAIL</th>
+                    <th style="width: 5vw">STATUS</th>
                   </tr>
 
-                  <tr style="height: 25px" *ngFor='let insumo of insumos; let i = index;'>
+                  <tr style="height: 25px" *ngFor='let usuario of usuarios; let i = index;'>
                     <td></td>
-                    <td>{{insumo.codigo}}</td>
-                    <td>{{insumo.descricao}}</td>
-                    <td>{{insumo.tipoinsumo}}</td>
-                    <td>{{insumo.unidademedida}}</td>
-                    <td>{{insumo.valornaodesonerado}}</td>
-                    <td>{{insumo.valordesonerado}}</td>
+                    
+                    <td>{{usuario.nome}}</td>
+                    <td>{{usuario.login}}</td>
+                    <td>{{usuario.email}}</td>
+                    <td>{{usuaro.status}}</td>
+                    
                     <td style="text-align: center">
-                      <button class="btn btn-xs btn-warning" (click)="editar(insumo.codigo)" style="margin-right: 2px">EDITAR</button>
-                      <button class="btn btn-xs btn-danger" (click)="excluir(insumo.codigo, i)">EXCLUIR</button>
+                      <button class="btn btn-xs btn-warning" (click)="editar(usuario.codigo)" style="margin-right: 2px">EDITAR</button>
+                      <button class="btn btn-xs btn-danger" (click)="excluir(usuario.codigo, i)">EXCLUIR</button>
                     </td>
                     <td></td>
                   </tr> 

@@ -22,10 +22,10 @@
           <!-- User Account Menu -->
           <li class="user user-menu">
             <!-- Menu Toggle Button -->
-            <a>
+            <a class="teste">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs"><i class="fa fa-user-circle-o"></i> {{ usuarioLogado.usunome }}</span>
-        
+              <span class="hidden-xs"><i class="fa fa-clock-o"></i> {{datahora | date:'dd/MM/yyyy HH:mm:ss'}} </span>
               
             </a>
           </li>

@@ -8,9 +8,11 @@ import { User } from 'src/app/_models';
 })
 export class OrcamentoHeaderComponent implements OnInit {
   usuarioLogado: User;
+  datahora:number;
 
   constructor() { 
     this.usuarioLogado = JSON.parse(localStorage.getItem('currentUser'));
+    setInterval(() => {this.datahora = Date.now() },1);
   }
 
   ngOnInit() {

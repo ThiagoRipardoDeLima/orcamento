@@ -12,6 +12,7 @@
 .breadcrumb>li+li:before {
     padding: 0 5px;
     content: "\003E";
+    color: black;
 }
 
 .fa-home:before{

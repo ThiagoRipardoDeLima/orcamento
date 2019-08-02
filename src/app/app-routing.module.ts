@@ -10,9 +10,17 @@ import { InsumoListComponent } from './insumos/insumo-lista/insumo.list.componen
 import { ComposicaoListComponent } from './composicoes/composicao-lista/composicao-list.component';
 import { ComposicaoAddComponent } from './composicoes/composicao-cadastro/composicao-cadastro.component';
 import { ComposicaoAddItemComponent } from './composicoes/composicao-cadastro-item/composicao-cadastro-item.component';
+import { ClienteListaComponent } from './clientes/cliente-lista/cliente-lista.component';
+import { ClienteCadastroComponent } from './clientes/cliente-cadastro/cliente-cadastro.component';
+import { UsuarioListaComponent } from './usuarios/usuario-lista/usuario-lista.component';
+import { UsuarioCadastroComponent } from './usuarios/usuario-cadastro/usuario-cadastro.component';
 
 const routes: Routes = [
   {path:'home', component: HomeComponent, canActivate: [AuthGuard]},
+  {path:'usuario/:id', component: UsuarioCadastroComponent, canActivate:[AuthGuard]},
+  {path:'usuarios', component: UsuarioListaComponent, canActivate:[AuthGuard]},
+  {path:'cliente/:id', component: ClienteCadastroComponent, canActivate:[AuthGuard]},
+  {path:'clientes', component: ClienteListaComponent, canActivate:[AuthGuard]},
   {path:'insumo/:id', component: InsumoAddComponent, canActivate:[AuthGuard]},
   {path:'insumos', component: InsumoListComponent, canActivate:[AuthGuard]},
   {path:'composicao/item/:id', component: ComposicaoAddItemComponent, canActivate:[AuthGuard]},

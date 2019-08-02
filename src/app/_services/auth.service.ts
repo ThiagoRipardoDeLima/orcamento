@@ -30,7 +30,7 @@ export class AuthService{
         //     }));
         
         this.userTemp = new User();
-        this.userTemp.usunome = 'thiago ripardo'; 
+        this.userTemp.usunome = 'THIAGO RIPARDO'; 
         this.userTemp.authdata = window.btoa(username + ':' + password);
 
         localStorage.setItem('currentUser', JSON.stringify(this.userTemp));
