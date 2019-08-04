@@ -15,7 +15,7 @@ import { UserService } from '../../_services/user.service';
 export class UsuarioCadastroComponent implements OnInit {
   private title = '';
   private subtitle = '';
-  private usuario:User;
+  private usuario:User = new User();;
   private submitted = false;
 
   /* PARA CARREGAR COMBOS*/
@@ -36,20 +36,39 @@ export class UsuarioCadastroComponent implements OnInit {
   ){}
 
   ngOnInit() {
-    this.usuario = new User();
-    this.activatedRouter.params.subscribe(parametro=>{
-        if(parametro["id"] > 0){
-            this.usuarioService.getUsuario(parametro['id']).subscribe(res => this.usuario = res);
-        }
-        if(this.usuario.usucod > 0){
-            this.title = 'ALTERAR USUÁRIO';
-            this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE USUÁRIOS';
-        }else{
-            this.title = 'NOVO USUÁRIO';
-            this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE USUÁRIOS';
-        }
-    })
     this.criarFormulario(this.usuario);
+
+    let id;
+    this.activatedRouter.params.subscribe(parametro=>{
+       id = parametro["id"];
+    })
+    if(id > 0){
+        this.usuarioService
+            .getUsuario(id)
+            .subscribe(res => {
+                this.usuario = res;
+               
+                this.formulario.setValue({
+                    codigo: this.usuario.usucod,
+                    nome:this.usuario.usunome,
+                    login:this.usuario.usulogin,
+                    password:this.usuario.ususenha,
+                    email:this.usuario.usuemail,
+                    status:TipoStatus[this.usuario.usustatus]
+                })
+                
+            });
+        
+    }
+
+    if(id > 0){
+        this.title = 'ALTERAR USUÁRIO';
+        this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE USUÁRIOS';
+    }else{
+        this.title = 'NOVO USUÁRIO';
+        this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE USUÁRIOS';
+    }
+    
   }
 
   get form(){return this.formulario.controls};
@@ -70,16 +89,17 @@ export class UsuarioCadastroComponent implements OnInit {
     if(!this.formulario.valid){
         return;
     }   
-    const dadosFormulario = this.formulario.value;
+    const dadosFormulario = this.formulario.getRawValue();
 
-    this.usuario.usucod     = dadosFormulario.usucod   
-    this.usuario.usunome    = dadosFormulario.usunome   
-    this.usuario.usulogin   = dadosFormulario.usulogin  
-    this.usuario.ususenha   = dadosFormulario.password  
-    this.usuario.usuemail   = dadosFormulario.usuemail  
-    this.usuario.usustatus  = dadosFormulario.usustatus  
-    
-    // alert(`Formulário: \n ${JSON.stringify(this.insumo)}`);
+    this.usuario.usucod     = dadosFormulario.codigo;   
+    this.usuario.usunome    = dadosFormulario.nome;
+    this.usuario.usulogin   = dadosFormulario.login;  
+    this.usuario.usucriadoem= new Date();
+    this.usuario.ususenha   = dadosFormulario.password;  
+    this.usuario.usuemail   = dadosFormulario.email;  
+    this.usuario.usustatus  = TipoStatus[dadosFormulario.status];
+
+    // console.log(`Formulário: \n ${JSON.stringify(this.usuario)}`);
     if (this.usuario.usucod > 0){
         //chama servico para atualizar insumo
         this.usuarioService
@@ -91,7 +111,8 @@ export class UsuarioCadastroComponent implements OnInit {
                 if(res.codigo == 1){
                     alert(res.mensagem);
                     this.formulario.reset();
-                    this.router.navigate(['/usuarios'])
+                    this.router.navigate(['/usuarios']);
+                    return;
                 }
                 //caso ocorra alguma exceção no servidor
                 alert(res.mensagem);
@@ -108,8 +129,9 @@ export class UsuarioCadastroComponent implements OnInit {
                 alert(res.mensagem);
                 this.formulario.reset();
                 this.router.navigate(['/usuarios']);
+                return;
             }
-            alert(res.mensagem);
+            alert(res.mensagem );
         })
     }    
   } 

@@ -18,7 +18,9 @@ export class ClienteService {
     this.baseUrlService = `${environment.apiUrl}/cliente/`;
 
     /** ADICIONA JSON NO HEADER */
-    this.options =  new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'});
+    this.options = {
+        headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'})
+    }; 
   }
 
     /** CONSULTA TODOS OS USUARIOS CADASTRADOS */
@@ -44,7 +46,7 @@ export class ClienteService {
     }
 
      /** CONSULTA UM USUARIO PELO TIPO INSUMO */
-     getClienteByCPF(cpf:string){
+    getClienteByCPF(cpf:string){
         return this.http.get<Cliente[]>(this.baseUrlService + cpf).pipe(map(res => {
             return res;
         }));

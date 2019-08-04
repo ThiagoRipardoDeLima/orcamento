@@ -5,5 +5,6 @@ export class User {
     ususenha    : string;
     usustatus   : string;
     usuemail    : string;
+    usucriadoem : Date;
     authdata?   : string;
 }

@@ -66,10 +66,9 @@ export class UsuarioListaComponent implements OnInit {
     }
     //nenhum filtro informado, busca todos
     this.usuarioService.getUsuarios().subscribe(res => this.usuarios = res);
-
   }
 
-  edita(id: number){
+  editar(id: number){
       this.router.navigate(['/usuario/',id]);
   }
 

@@ -16,7 +16,9 @@ export class UserService{
         this.baseUrlService = `${environment.apiUrl}/users/`;
     
         /** ADICIONA JSON NO HEADER */
-        this.options =  new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'});
+        this.options = {
+            headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'}) 
+        };
     }
 
     /** CONSULTA TODOS OS USUARIOS CADASTRADOS */
@@ -36,14 +38,16 @@ export class UserService{
 
     /** CONSULTA UM USUARIO PELA DESCRICAO */
     getUsuarioByName(descricao:string){
-        return this.http.get<User[]>(this.baseUrlService + descricao).pipe(map(res => {
+        let params = 'name/' + descricao;
+        return this.http.get<User[]>(this.baseUrlService + params).pipe(map(res => {
             return res;
         }));
     }
 
-     /** CONSULTA UM USUARIO PELO TIPO INSUMO */
+     /** CONSULTA UM USUARIO PELO LOGIN */
      getUsuarioByLogin(login:string){
-        return this.http.get<User[]>(this.baseUrlService + login).pipe(map(res => {
+        let params = 'login/' + login;
+        return this.http.get<User[]>(this.baseUrlService + params).pipe(map(res => {
             return res;
         }));
     }

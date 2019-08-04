@@ -35,22 +35,23 @@
                   <tr>
                     <th style="width: 1vw"></th>
                     <th style="width: 30vw">NOME</th>
-                    <th style="width: 30vw">LOGIN</th>
-                    <th style="width: 20vw">EMAIL</th>
-                    <th style="width: 5vw">STATUS</th>
+                    <th style="width: 15vw">LOGIN</th>
+                    <th style="width: 15vw">EMAIL</th>
+                    <th style="width: 10vw">STATUS</th>
+                    <th style="width: 10vw"></th>
                   </tr>
 
                   <tr style="height: 25px" *ngFor='let usuario of usuarios; let i = index;'>
                     <td></td>
                     
-                    <td>{{usuario.nome}}</td>
-                    <td>{{usuario.login}}</td>
-                    <td>{{usuario.email}}</td>
-                    <td>{{usuaro.status}}</td>
+                    <td>{{usuario.usunome}}</td>
+                    <td>{{usuario.usulogin}}</td>
+                    <td>{{usuario.usuemail}}</td>
+                    <td>{{usuario.usustatus}}</td>
                     
                     <td style="text-align: center">
-                      <button class="btn btn-xs btn-warning" (click)="editar(usuario.codigo)" style="margin-right: 2px">EDITAR</button>
-                      <button class="btn btn-xs btn-danger" (click)="excluir(usuario.codigo, i)">EXCLUIR</button>
+                      <button class="btn btn-xs btn-warning" (click)="editar(usuario.usucod)" style="margin-right: 2px">EDITAR</button>
+                      <button class="btn btn-xs btn-danger" (click)="excluir(usuario.usucod, i)">EXCLUIR</button>
                     </td>
                     <td></td>
                   </tr> 
