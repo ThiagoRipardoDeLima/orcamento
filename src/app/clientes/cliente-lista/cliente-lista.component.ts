@@ -68,7 +68,7 @@ export class ClienteListaComponent implements OnInit{
 
     }
 
-    edita(id: number){
+    editar(id: number){
         this.router.navigate(['/cliente/',id]);
     }
 

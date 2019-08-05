@@ -25,7 +25,7 @@ import { ClienteCadastroComponent } from './clientes/cliente-cadastro/cliente-ca
 import { UsuarioListaComponent } from './usuarios/usuario-lista/usuario-lista.component';
 import { UsuarioCadastroComponent } from './usuarios/usuario-cadastro/usuario-cadastro.component';
 import { OrcamentoListaComponent } from './orcamentos/orcamento-lista/orcamento-lista.component';
-// import { OrcamentoCadastroComponent } from './orcamentos/orcamento-cadastro/orcamento-cadastro.component';
+import { OrcamentoCadastroComponent } from './orcamentos/orcamento-cadastro/orcamento-cadastro.component';
 
 registerLocaleData(ptBr);
 
@@ -48,8 +48,8 @@ registerLocaleData(ptBr);
     ClienteCadastroComponent,
     UsuarioListaComponent,
     UsuarioCadastroComponent,
-    OrcamentoListaComponent
-    // OrcamentoCadastroComponent
+    OrcamentoListaComponent,
+    OrcamentoCadastroComponent
   ],
   imports: [
     BrowserModule,

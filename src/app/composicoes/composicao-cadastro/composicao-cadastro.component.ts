@@ -40,24 +40,39 @@ export class ComposicaoAddComponent{
                 private composicaoService: ComposicaoService){}
 
     ngOnInit(){
+        let id = 0;
         this.activatedRouter.params.subscribe(parametro=>{
-            if(parametro["id"] > 0){
-                this.composicaoService.getComposicao(parametro['id']).subscribe(res => this.composicao = res);
-            }
-            if(this.composicao.codigo > 0){
-                this.title = 'ALTERAR COMPOSIÇÃO';
-                this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE COMPOSIÇÃO';
-            }else{
-                this.title = 'NOVA COMPOSIÇÃO';
-                this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE COMPOSIÇÃO';
-            }
-        })
-        this.criarFormularioDeInsumos(this.composicao);
+            id = parametro["id"];   
+        });  
+
+        this.title = 'NOVA COMPOSIÇÃO';
+        this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE COMPOSIÇÃO';
+            
+        if(id>0){
+            this.title = 'ALTERAR COMPOSIÇÃO';
+            this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE COMPOSIÇÃO';
+
+            this.composicaoService
+                .getComposicao(id)
+                .subscribe(res => {
+                    this.formulario.setValue({
+                        codigo:     res.codigo,
+                        descricao:  res.descricao,
+                        tipo:       res.tipocomposicao,
+                        unidade:    res.unidademedida,
+                        maodeobra:  res.maodeobra,
+                        estado:     res.estado,
+                        observacao: res.observacao
+                    });
+                });
+        }
+                
+        this.criarFormulario(this.composicao);
     }
 
     get form(){return this.formulario.controls};
 
-    criarFormularioDeInsumos(composicao: Composicao){
+    criarFormulario(composicao: Composicao){
         this.formulario = this.formBuilder.group({
             codigo: new FormControl({value:composicao.codigo ,disabled:true},[Validators.required]),
             descricao:[composicao.descricao, Validators.required],
@@ -65,27 +80,27 @@ export class ComposicaoAddComponent{
             unidade:[composicao.unidademedida, Validators.required],
             maodeobra:[composicao.maodeobra],
             estado:[composicao.estado, Validators.required],
-            valornaodesonerado:[composicao.valornaodesonerado],
-            valordesonerado:[composicao.valordesonerado],
+            // valornaodesonerado:[composicao.valornaodesonerado],
+            // valordesonerado:[composicao.valordesonerado],
             observacao:[composicao.observacao, Validators.maxLength(500)]
         })
     }
-
 
     salvar(){
         this.submitted = true;
         if(!this.formulario.valid){
             return;
         }   
-        const dadosFormulario = this.formulario.value;
+        const dadosFormulario = this.formulario.getRawValue();
         
+        this.composicao.codigo              = dadosFormulario.codigo;
         this.composicao.descricao           = dadosFormulario.descricao;
-        this.composicao.tipocomposicao      = dadosFormulario.tipo;
+        this.composicao.tipocomposicao      = TipoComposicao[dadosFormulario.tipo];
         this.composicao.maodeobra           = dadosFormulario.maodeobra;
         this.composicao.unidademedida       = dadosFormulario.unidade;
         this.composicao.estado              = dadosFormulario.estado;
-        this.composicao.valordesonerado     = dadosFormulario.valordesonerado;
-        this.composicao.valornaodesonerado  = dadosFormulario.valornaodesonerado; 
+        // this.composicao.valordesonerado     = dadosFormulario.valordesonerado;
+        // this.composicao.valornaodesonerado  = dadosFormulario.valornaodesonerado; 
         this.composicao.observacao          = dadosFormulario.observacao;
         this.composicao.criadoem            = new Date();
 
@@ -101,7 +116,8 @@ export class ComposicaoAddComponent{
                     if(res.codigo == 1){
                         alert(res.mensagem);
                         this.formulario.reset();
-                        this.router.navigate(['/composicao/item/',this.composicao.codigo])
+                        this.router.navigate(['/composicao/item/',this.composicao.codigo]);
+                        return;
                     }
                     //caso ocorra alguma exceção no servidor
                     alert(res.mensagem);
@@ -117,20 +133,22 @@ export class ComposicaoAddComponent{
                 //pega retorno do servidor
                 let res:Response = <Response><unknown>response;
                 //se retorno 1 mostra mensagem de sucesso
-                if (res.codigo > 0){
-                    alert(res.mensagem);
-                    this.formulario.reset();
-                    this.router.navigate(['/composicao/item/',res.codigo]);
+                if (res.codigo == 1){
+                    this.composicaoService
+                        .getComposicaoByLastId()
+                        .subscribe(response => {
+                            let res:Response = <Response><unknown>response;
+                            this.formulario.reset();
+                            this.router.navigate(['/composicao/item/',res.codigo]);
+                            return;
+                        });
                 }
                 alert(res.mensagem);
             },
             error => {
                 alert('Serviço indisponível no momento. Contate o administrador do sistema e informe o código(' + error.status + ' - ' + error.statusText + ').');
-                this.router.navigate(['/composicao/item/',1]);
             });
         }
-        
-        
     }
 
     cancelar(e: Event){
@@ -145,21 +163,18 @@ export class ComposicaoAddComponent{
             this.valor = valor.length;
     }
 
-    getValorNaoDesonerado(price: string){
-        if(price == '')
-            return;
-        let valor = parseFloat(price.replace(',','.'));
-        this.form.valornaodesonerado.setValue(this.getFormatPrice(valor));
+    getLastId():number{
+        let id = 0;
+        this.composicaoService
+        .getComposicaoByLastId()
+        .subscribe(response => {
+            let res:Response = <Response><unknown>response;
+            alert(res.codigo);
+            
+            id = res.codigo;
+        });
+        alert("ID = " + id);
+        return id;
     }
 
-    getValorDesonerado(price: string){
-        if(price == '')
-            return;
-        let valor = parseFloat(price.replace(',','.'));
-        this.form.valordesonerado.setValue(this.getFormatPrice(valor));
-    }
-
-    getFormatPrice(price: number){
-        return new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2}).format(price);
-    }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ResolvedReflectiveFactory, ɵConsole } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { Estados, TipoInsumo } from '../../_helper/Enums';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -11,7 +11,6 @@ import { Response } from '../../_helper/response';
     templateUrl:'./insumo-cadastro.component.html',
     styleUrls:['./insumo-cadastro.component.css']
 })
-
 export class InsumoAddComponent{
     private title = '';
     private subtitle = '';
@@ -39,18 +38,34 @@ export class InsumoAddComponent{
                 private insumoService: InsumoService){}
 
     ngOnInit(){
+        let id = 0;
         this.activatedRouter.params.subscribe(parametro=>{
-            if(parametro["id"] > 0){
-                this.insumoService.getInsumo(parametro['id']).subscribe(res => this.insumo = res);
-            }
-            if(this.insumo.codigo > 0){
-                this.title = 'ALTERAR INSUMO';
-                this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE INSUMOS';
-            }else{
-                this.title = 'NOVO INSUMO';
-                this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE INSUMOS';
-            }
-        })
+            id = parametro["id"];
+        });
+
+        this.title = 'NOVO INSUMO';
+        this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE INSUMOS';
+            
+        if(id > 0){
+            this.title = 'ALTERAR INSUMO';
+            this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE INSUMOS';
+
+            this.insumoService
+                .getInsumo(id)
+                .subscribe(res => {
+                    this.formularioInsumos.setValue({
+                        codigo:             res.codigo,
+                        descricao:          res.descricao,
+                        tipo:               TipoInsumo[res.tipoinsumo],
+                        unidade:            res.unidademedida,
+                        estado:             res.estado,
+                        valornaodesonerado: res.valornaodesonerado,
+                        valordesonerado:    res.valordesonerado,
+                        observacao:         res.observacao
+                    });
+                });
+        }
+            
         this.criarFormularioDeInsumos(this.insumo);
     }
 
@@ -69,27 +84,28 @@ export class InsumoAddComponent{
         })
     }
 
-
     salvar(){
         this.submitted = true;
         if(!this.formularioInsumos.valid){
             return;
         }   
-        const dadosFormulario = this.formularioInsumos.value;
+        const dadosFormulario = this.formularioInsumos.getRawValue();
         
+        this.insumo.codigo              = dadosFormulario.codigo;
         this.insumo.descricao           = dadosFormulario.descricao;
-        this.insumo.tipoinsumo          = dadosFormulario.tipo;
+        this.insumo.tipoinsumo          = TipoInsumo[dadosFormulario.tipo];
         this.insumo.unidademedida       = dadosFormulario.unidade;
         this.insumo.estado              = dadosFormulario.estado;
         this.insumo.valordesonerado     = dadosFormulario.valordesonerado;
         this.insumo.valornaodesonerado  = dadosFormulario.valornaodesonerado; 
         this.insumo.observacao          = dadosFormulario.observacao;
 
-        // alert(`Formulário: \n ${JSON.stringify(this.insumo)}`);
+        // console.log(`Formulário: \n ${JSON.stringify(this.insumo)}`);
+        // return;
         if (this.insumo.codigo > 0){
             //chama servico para atualizar insumo
             this.insumoService
-                .addInsumo(this.insumo)
+                .updateInsumo(this.insumo)
                 .subscribe(response => {
                     //pega retorno do servidor
                     let res:Response = <Response><unknown>response;
@@ -97,7 +113,8 @@ export class InsumoAddComponent{
                     if(res.codigo == 1){
                         alert(res.mensagem);
                         this.formularioInsumos.reset();
-                        this.router.navigate(['/home'])
+                        this.router.navigate(['/insumos']);
+                        return;
                     }
                     //caso ocorra alguma exceção no servidor
                     alert(res.mensagem);
@@ -113,13 +130,12 @@ export class InsumoAddComponent{
                 if (res.codigo == 1){
                     alert(res.mensagem);
                     this.formularioInsumos.reset();
-                    this.router.navigate(['/home']);
+                    this.router.navigate(['/insumos']);
+                    return;
                 }
                 alert(res.mensagem);
             })
         }
-        
-        
     }
 
     cancelar(e: Event){
@@ -130,6 +146,9 @@ export class InsumoAddComponent{
 
     contador(){
         let valor = this.form.observacao.value;
+        if(valor == null){
+            return;
+        }
         this.valor = valor.length;
     }
 

@@ -4,6 +4,7 @@ export class Cliente {
     cpf         :string;
     rg          :string;
     email       :string;
+    telefone    :string;
     cep         :string;
     logradouro  :string;
     numero      :string;

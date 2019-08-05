@@ -15,7 +15,9 @@ export class ComposicaoService{
         this.baseUrlService = `${environment.apiUrl}/composicao/`;
 
         /** ADICIONA JSON NO HEADER */
-        this.options =  new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'});
+        this.options = {
+            headers : new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'})
+        }
     }
 
     /** CONSULTA TODOS OS USUARIOS CADASTRADOS */
@@ -35,16 +37,27 @@ export class ComposicaoService{
 
     /** CONSULTA UM USUARIO PELA DESCRICAO */
     getComposicaoByDescription(descricao:string){
-        return this.http.get<Composicao[]>(this.baseUrlService + descricao).pipe(map(res => {
+        let param = 'description/' + descricao;
+        return this.http.get<Composicao[]>(this.baseUrlService + param).pipe(map(res => {
             return res;
         }));
     }
 
      /** CONSULTA UM USUARIO PELO TIPO INSUMO */
      getComposicaoByType(type:string){
-        return this.http.get<Composicao[]>(this.baseUrlService + type).pipe(map(res => {
+         let param = 'type/' + type;
+        return this.http.get<Composicao[]>(this.baseUrlService + param).pipe(map(res => {
             return res;
         }));
+    }
+
+     /** CONSULTA O ID DA ULTIMA COMPOSICAO GRAVADA */
+     getComposicaoByLastId(){
+        return this.http
+                    .get<any>(this.baseUrlService+'/id')
+                    .pipe(map(res => {
+                        return res;
+                    }));
     }
 
     /** ADICIONA UM NOVO USUARIO */
@@ -72,4 +85,6 @@ export class ComposicaoService{
             return res
         }));
     }
+
+
 }

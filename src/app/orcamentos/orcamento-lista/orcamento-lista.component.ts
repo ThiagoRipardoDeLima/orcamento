@@ -70,7 +70,7 @@ export class OrcamentoListaComponent implements OnInit {
     this.router.navigate(['/orcamento/','']);
   }
 
-  edita(id: number){
+  editar(id: number){
     this.router.navigate(['/orcamento/',id]);
   }
 

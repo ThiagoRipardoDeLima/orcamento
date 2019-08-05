@@ -4,9 +4,9 @@ export class Composicao{
     maodeobra           : boolean = false;
     tipocomposicao      : string = null;
     unidademedida       : string = null;
-    criadoem            :Date;
+    totalnaodesonerado  : number = 0;
+    totaldesonerado     : number = 0;
+    criadoem            : Date;
     estado              : string;
     observacao          : string = null;
-    valornaodesonerado  : number = 0;
-    valordesonerado     : number = 0;
 }

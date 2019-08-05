@@ -21,6 +21,7 @@ export class ComposicaoAddItemComponent{
     private isInsumo        = false;
     private isComposicao    = false;
     private idComposicao:number;
+    private composicao:Composicao = new Composicao();
     private listaItensComposicao: ComposicaoItem[] = new Array();
 
     //modal
@@ -53,20 +54,30 @@ export class ComposicaoAddItemComponent{
             this.router.navigate(["/composicao",this.idComposicao]);
         }
 
+        //busca a composicao
+        this.composicaoService
+            .getComposicao(this.idComposicao)
+            .subscribe(res => {
+                this.composicao = res;
+            })
+
         //traz os itens da composicao
         this.composicaoItemService
             .getComposicoesItens(this.idComposicao)
-            .subscribe(res => this.listaItensComposicao = res);
+            .subscribe(res => {
+                this.listaItensComposicao = res
+                if(this.listaItensComposicao.length > 0){
+                    this.title = 'ALTERAR COMPOSIÇÃO';
+                    this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE COMPOSIÇÃO';
+                    this.isUpdate = true;
+                }
+                this.atualizaTotal();
+            
+            });
         
         this.title = 'NOVA COMPOSIÇÃO';
         this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE COMPOSIÇÃO';
 
-        if(this.listaItensComposicao.length > 0){
-            this.title = 'ALTERAR COMPOSIÇÃO';
-            this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE COMPOSIÇÃO';
-            this.isUpdate = true;
-        }
-            
         this.formInit();
     }
 
@@ -111,6 +122,8 @@ export class ComposicaoAddItemComponent{
                 itens.quantidade            = quantidade;
                 itens.valordesonerado       *= quantidade;
                 itens.valornaodesonerado    *= quantidade;
+                this.composicao.totaldesonerado += itens.valordesonerado;
+                this.composicao.totalnaodesonerado += itens.valornaodesonerado;
                 this.f.quantidade           = 0;
             }
            
@@ -126,6 +139,7 @@ export class ComposicaoAddItemComponent{
         this.itemSelecionado.valordesonerado      *= this.f.quantidade;
         this.itemSelecionado.valornaodesonerado   *= this.f.quantidade;
         this.listaItensComposicao.push(this.itemSelecionado);
+        this.atualizaTotal();
         this.limparFormularioPesquisa();
     }
 
@@ -178,8 +192,8 @@ export class ComposicaoAddItemComponent{
     getInsumo(codigo:number,descricao:string,tipobanco:number){
         /////INSUMOS
         //SINAPI = 1
-        let insumo:Insumo;
-        let insumos:Insumo[];
+        let insumo:Insumo = new Insumo();
+        let insumos:Insumo[] = new Array();
         let compItem:ComposicaoItem;
 
         if(tipobanco){
@@ -209,27 +223,29 @@ export class ComposicaoAddItemComponent{
 
         this.insumoService
             .getInsumoByDescription(descricao)
-            .subscribe(res => { insumos = res });
-            
-        insumos.forEach( item => {
-            compItem.codcomposicao      = this.idComposicao;
-            compItem.coditem            = item.codigo;
-            compItem.descricao          = item.descricao;
-            compItem.tipoitem           = TipoItem[TipoItem.INSUMO];
-            compItem.tipobanco          = TipoBanco[TipoBanco.PRÓPRIO];
-            compItem.maodeobra          = false;
-            compItem.tipoclasse         = item.tipoinsumo;
-            compItem.unidade            = item.unidademedida;
-            compItem.valordesonerado    = item.valordesonerado;
-            compItem.valornaodesonerado = item.valornaodesonerado;
-            this.composicaoModal.push(compItem);
-        });
+            .subscribe(res => { 
+                insumos = res 
+                insumos.forEach( item => {
+                    compItem = new ComposicaoItem();
+                    compItem.codcomposicao      = this.idComposicao;
+                    compItem.coditem            = item.codigo;
+                    compItem.descricao          = item.descricao;
+                    compItem.tipoitem           = TipoItem[TipoItem.INSUMO];
+                    compItem.tipobanco          = TipoBanco[TipoBanco.PRÓPRIO];
+                    compItem.maodeobra          = false;
+                    compItem.tipoclasse         = item.tipoinsumo;
+                    compItem.unidade            = item.unidademedida;
+                    compItem.valordesonerado    = item.valordesonerado;
+                    compItem.valornaodesonerado = item.valornaodesonerado;
+                    this.composicaoModal.push(compItem);
+                });
+            });
     }
 
     getComposicao(codigo:number, descricao:string, tipobanco:number){
-        let composicao:Composicao;
-        let composicoes:Composicao[];
-        let compItem:ComposicaoItem;
+        let composicao:Composicao = new Composicao();
+        let composicoes:Composicao[] = new Array();
+        let compItem:ComposicaoItem = new ComposicaoItem();
 
 
         if(tipobanco){
@@ -250,25 +266,29 @@ export class ComposicaoAddItemComponent{
             compItem.descricao          = composicao.descricao;
             compItem.tipoclasse         = composicao.tipocomposicao;
             compItem.unidade            = composicao.unidademedida;
-            compItem.valordesonerado    = composicao.valordesonerado;
-            compItem.valornaodesonerado = composicao.valornaodesonerado;
+            compItem.valordesonerado    = composicao.totaldesonerado;
+            compItem.valornaodesonerado = composicao.totalnaodesonerado;
             this.composicaoModal.push(compItem);
             return;
         }
-        this.composicaoService.getComposicaoByDescription(descricao).subscribe(res => composicoes = res);
-        composicoes.forEach(item => {
-            compItem.codcomposicao      = this.idComposicao;
-            compItem.tipobanco          = TipoBanco[TipoBanco.PRÓPRIO];
-            compItem.tipoitem           = TipoItem[TipoItem.COMPOSIÇÃO];
-        
-            compItem.coditem            = item.codigo;
-            compItem.descricao          = item.descricao;
-            compItem.tipoclasse         = item.tipocomposicao;
-            compItem.unidade            = item.unidademedida;
-            compItem.valordesonerado    = item.valordesonerado;
-            compItem.valornaodesonerado = item.valornaodesonerado;
-            this.composicaoModal.push(compItem);
-        });
+        this.composicaoService
+            .getComposicaoByDescription(descricao)
+            .subscribe(res => {
+                composicoes = res;
+                composicoes.forEach(item => {
+                    compItem.codcomposicao      = this.idComposicao;
+                    compItem.tipobanco          = TipoBanco[TipoBanco.PRÓPRIO];
+                    compItem.tipoitem           = TipoItem[TipoItem.COMPOSIÇÃO];
+                
+                    compItem.coditem            = item.codigo;
+                    compItem.descricao          = item.descricao;
+                    compItem.tipoclasse         = item.tipocomposicao;
+                    compItem.unidade            = item.unidademedida;
+                    compItem.valordesonerado    = item.totaldesonerado;
+                    compItem.valornaodesonerado = item.totalnaodesonerado;
+                    this.composicaoModal.push(compItem);
+                });
+            });
     }
 
     selecionarItem(item: ComposicaoItem){
@@ -290,8 +310,23 @@ export class ComposicaoAddItemComponent{
     }
 
     excluir(id:number, index:number){
+        
         if(confirm("Deseja realmente excluir esse registro?")){
+            if(this.isUpdate){
+                this.composicaoItemService
+                    .deleteComposicaoItem(id)
+                    .subscribe(response => {
+                        let res:Response = <Response>response;
+                        if(res.codigo == 1){
+                            alert(res.mensagem);
+                        }else{
+                            alert(res.mensagem);
+                            return
+                        }
+                    })
+            }
             this.listaItensComposicao.splice(index,1);
+            this.atualizaTotal();
         }
     }
 
@@ -312,6 +347,11 @@ export class ComposicaoAddItemComponent{
             }
 
             if (this.isUpdate){
+                
+                //atualiza composicao
+                this.atualizaComposicao();
+
+                //atualiza itens da composicao
                 this.composicaoItemService
                     .updateComposicaoItem(this.listaItensComposicao)
                     .subscribe(response => {
@@ -326,10 +366,14 @@ export class ComposicaoAddItemComponent{
                         alert(res.mensagem);
                     },
                     error => {
-                        alert('Não foi possível finalizar o cadastro. Contate o administrador do sistema e informe o código(' + error.status + ' - ' + error.statusText + ').');
+                        alert('Não foi possível atualizar o cadastro. Contate o administrador do sistema e informe o código(' + error.status + ' - ' + error.statusText + ').');
                     }
                 );
             }else{
+                //atualiza composicao
+                this.atualizaComposicao();
+
+                //adiciona itens na composicao
                 this.composicaoItemService
                     .addComposicaoItem(this.listaItensComposicao)
                     .subscribe(response => {
@@ -344,12 +388,32 @@ export class ComposicaoAddItemComponent{
                         alert(res.mensagem);
                     },
                     error => {
-                        alert('Não foi possível finalizar o cadastro. Contate o administrador do sistema e informe o código(' + error.status + ' - ' + error.statusText + ').');
+                        alert('Não foi possível adicionar o cadastro. Contate o administrador do sistema e informe o código(' + error.status + ' - ' + error.statusText + ').');
                     }
                 );
             }
            
         }
+    }
+
+    atualizaTotal(){
+        this.composicao.totaldesonerado = 0;
+        this.composicao.totalnaodesonerado = 0;
+        this.listaItensComposicao.forEach(i =>{
+            this.composicao.totaldesonerado     += i.valordesonerado;
+            this.composicao.totalnaodesonerado  += i.valornaodesonerado;
+        })
+    }
+
+    atualizaComposicao(){
+        //atualiza composicao
+        this.composicaoService
+        .updateComposicao(this.composicao)
+        .subscribe(response => {
+            //pega retorno do servidor
+            let res:Response = <Response><unknown>response;
+            console.log(res.mensagem);
+        });
     }
 
 }

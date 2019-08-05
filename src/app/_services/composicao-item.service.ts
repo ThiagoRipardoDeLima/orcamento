@@ -15,7 +15,9 @@ export class ComposicaoItemService{
         this.baseUrlService = `${environment.apiUrl}/composicao-item/`;
 
         /** ADICIONA JSON NO HEADER */
-        this.options =  new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'});
+        this.options = {
+            headers: new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'})
+        }
     }
 
     /** CONSULTA TODOS OS ITENS CADASTRADO NA COMPOSICAO */
@@ -36,7 +38,7 @@ export class ComposicaoItemService{
 
     /** ADICIONA UMA NOVO ITEM A COMPOSICAO */
     addComposicaoItem(composicaoItem: ComposicaoItem[]){
-
+        console.log(composicaoItem);
         return this.http.post<any>(this.baseUrlService, JSON.stringify(composicaoItem), this.options)
                     .pipe(map(res => {
                         return res;

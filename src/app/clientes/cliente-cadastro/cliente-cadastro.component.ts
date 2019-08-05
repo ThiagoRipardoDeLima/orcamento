@@ -31,19 +31,39 @@ export class ClienteCadastroComponent implements OnInit {
     ){}
 
     ngOnInit(){
+        let id=0;
         this.cliente = new Cliente();
         this.activatedRouter.params.subscribe(parametro=>{
-            if(parametro["id"] > 0){
-                this.clienteService.getCliente(parametro['id']).subscribe(res => this.cliente = res);
-            }
-            if(this.cliente.codigo > 0){
-                this.title = 'ALTERAR CLIENTE';
-                this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE CLIENTES';
-            }else{
-                this.title = 'NOVO CLIENTE';
-                this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE CLIENTES';
-            }
-        })
+            id = parametro["id"];
+        });
+
+        this.title = 'NOVO CLIENTE';
+        this.subtitle = 'FORMULÁRIO DE CRIAÇÃO DE CLIENTES';
+
+        if(id > 0){
+            this.title = 'ALTERAR CLIENTE';
+            this.subtitle = 'FORMULÁRIO DE ALTERAÇÃO DE CLIENTES';
+            
+            this.clienteService
+                .getCliente(id)
+                .subscribe(res => {
+                    this.formularioCliente.setValue({
+                        codigo:     res.codigo,
+                        nome:       res.nome,
+                        rg:         res.rg,
+                        cpf:        res.cpf,
+                        email:      res.email,
+                        telefone:   res.telefone,
+                        cep:        res.cep,
+                        logradouro: res.logradouro,
+                        numero:     res.numero,    
+                        complemento:res.complemento,
+                        bairro:     res.bairro,
+                        cidade:     res.cidade,
+                        estado:     res.estado
+                    });
+                });
+        }
         this.criarFormularioDeInsumos(this.cliente);
     }
 
@@ -56,6 +76,7 @@ export class ClienteCadastroComponent implements OnInit {
             rg:[cliente.rg],
             cpf:[cliente.cpf],
             email:[cliente.email],
+            telefone:[cliente.telefone],
             cep:[cliente.cep],
             logradouro:[cliente.logradouro],
             numero:[cliente.numero],
@@ -71,15 +92,18 @@ export class ClienteCadastroComponent implements OnInit {
         if(!this.formularioCliente.valid){
             return;
         }   
-        const dadosFormulario = this.formularioCliente.value;
+        const dadosFormulario = this.formularioCliente.getRawValue();
 
         this.cliente.codigo     = dadosFormulario.codigo
         this.cliente.nome       = dadosFormulario.nome   
         this.cliente.cpf        = dadosFormulario.cpf    
         this.cliente.rg         = dadosFormulario.rg     
         this.cliente.email      = dadosFormulario.email  
+        this.cliente.telefone   = dadosFormulario.telefone
+        this.cliente.numero     = dadosFormulario.numero
         this.cliente.cep        = dadosFormulario.cep     
         this.cliente.logradouro = dadosFormulario.logradouro
+        this.cliente.complemento= dadosFormulario.complemento
         this.cliente.bairro     = dadosFormulario.bairro 
         this.cliente.cidade     = dadosFormulario.cidade 
         this.cliente.estado     = dadosFormulario.estado 
@@ -97,6 +121,7 @@ export class ClienteCadastroComponent implements OnInit {
                         alert(res.mensagem);
                         this.formularioCliente.reset();
                         this.router.navigate(['/clientes'])
+                        return;
                     }
                     //caso ocorra alguma exceção no servidor
                     alert(res.mensagem);
@@ -113,6 +138,7 @@ export class ClienteCadastroComponent implements OnInit {
                     alert(res.mensagem);
                     this.formularioCliente.reset();
                     this.router.navigate(['/clientes']);
+                    return;
                 }
                 alert(res.mensagem);
             })

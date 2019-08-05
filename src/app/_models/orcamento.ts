@@ -5,7 +5,7 @@ export class Orcamento{
     datasinapi          : Date;
     cliente             : string = null;
     criadoem            : Date;
-    islicitacao         : boolean;
+    islicitacao         : boolean = false;
     tipolicitacao       : string = null;
     datahoralicitacao   : Date;
     numeroprocesso      : string = null;

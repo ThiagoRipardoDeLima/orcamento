@@ -17,6 +17,29 @@
     </div>        
 </div>
 <br>
+<div class="box">
+    <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Código</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Total Desonerado</th>
+            <th scope="col">Total Não Desonerado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{composicao.codigo}}</td>
+            <td>{{composicao.descricao}}</td>
+            <td>{{composicao.estado}}</td>
+            <td>{{composicao.totaldesonerado | currency:'BRL'}}</td>
+            <td>{{composicao.totalnaodesonerado | currency:'BRL'}}</td>
+          </tr>
+        </tbody>
+    </table>
+</div>
+
 <div class="box box-warning">
        
               <!-- /.box-header -->

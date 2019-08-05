@@ -15,6 +15,7 @@ import { ClienteCadastroComponent } from './clientes/cliente-cadastro/cliente-ca
 import { UsuarioListaComponent } from './usuarios/usuario-lista/usuario-lista.component';
 import { UsuarioCadastroComponent } from './usuarios/usuario-cadastro/usuario-cadastro.component';
 import { OrcamentoListaComponent } from './orcamentos/orcamento-lista/orcamento-lista.component';
+import { OrcamentoCadastroComponent } from './orcamentos/orcamento-cadastro/orcamento-cadastro.component';
 
 const routes: Routes = [
   {path:'home', component: HomeComponent, canActivate: [AuthGuard]},
@@ -25,7 +26,7 @@ const routes: Routes = [
   {path:'insumo/:id', component: InsumoAddComponent, canActivate:[AuthGuard]},
   {path:'insumos', component: InsumoListComponent, canActivate:[AuthGuard]},
   // {path:'orcamento/item/:id', component: OrcamentoCadastroItemComponent, canActivate:[AuthGuard]},
-  // {path:'orcamento/:id', component: OrcamentoCadastroComponent, canActivate:[AuthGuard]},
+  {path:'orcamento/:id', component: OrcamentoCadastroComponent, canActivate:[AuthGuard]},
   {path:'orcamentos', component: OrcamentoListaComponent, canActivate:[AuthGuard]},
   {path:'composicao/item/:id', component: ComposicaoAddItemComponent, canActivate:[AuthGuard]},
   {path:'composicao/:id', component: ComposicaoAddComponent, canActivate:[AuthGuard]},

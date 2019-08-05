@@ -14,7 +14,7 @@ import { Response } from '../../_helper/response';
 export class InsumoListComponent{
     private title = '';
     private subtitle = '';
-    private insumos: Insumo[] = new Array();
+    private insumos: Insumo[];
     private formSearch: FormGroup;
     
     constructor(private router: Router,
@@ -43,16 +43,18 @@ export class InsumoListComponent{
 
     buscarInsumo(){
         //pega valores da busca
-        let id          = this.f.id;
-        let description = this.f.descricao;
-        let type        = this.f.tipo;
-        
+        let id:number          = this.f.id;
+        let description:string = this.f.descricao;
+        let type:string        = this.f.tipo;
+       
         //limpa registros para nova busca
-        this.insumos = null;
+        this.insumos = new Array();
 
         //efetuamos a busca conforme o filtro preenchido
-        if(id != 0){
-            this.insumoService.getInsumo(id).subscribe(res => this.insumos.push(res));
+        if(id != 0 && id != null){
+            this.insumoService.getInsumo(id).subscribe(res => {
+                this.insumos.push(res);
+            });
             return
         }
         if(description != ''){
@@ -64,11 +66,12 @@ export class InsumoListComponent{
             return
         }
         //nenhum filtro informado, busca todos
-        this.insumoService.getInsumos().subscribe(res => this.insumos = res);
-
+        this.insumoService
+            .getInsumos()
+            .subscribe(res =>{this.insumos = res});
     }
 
-    edita(id: number){
+    editar(id: number){
         this.router.navigate(['/insumo/',id]);
     }
 

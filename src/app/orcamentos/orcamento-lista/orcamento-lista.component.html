@@ -36,9 +36,9 @@
                     <th style="width: 1vw"></th>
                     <th style="width: 10vw">CÓDIGO</th>
                     <th style="width: 30vw">DESCRIÇÃO</th>
-                    <th style="width: 30vw">CLIENTE</th>
-                    <th style="width: 5vw">CRIADO EM</th>
-                    <th style="width: 5vw;">ESTADO</th>
+                    <th style="width: 20vw">CLIENTE</th>
+                    <th style="width: 15vw">CRIADO EM</th>
+                    <th style="width: 10vw;">ESTADO</th>
                     <th style="width: 5vw">DATA REFERÊNCIA</th>
                     <th style="width: 15vw"></th>
                     
@@ -49,7 +49,7 @@
                     <td>{{o.codigo}}</td>
                     <td>{{o.descricao}}</td>
                     <td>{{o.cliente}}</td>
-                    <td>{{o.criadoem}}</td>
+                    <td>{{o.criadoem | date:'dd/MM/yyyy HH:mm:ss'}}</td>
                     <td>{{o.estado}}</td>
                     <td>{{o.datasinapi}}</td>
                     <td style="text-align: center">

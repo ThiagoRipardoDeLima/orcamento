@@ -15,7 +15,9 @@ export class OrcamentoService{
         this.baseUrlService = `${environment.apiUrl}/orcamento/`;
 
         /** ADICIONA JSON NO HEADER */
-        this.options =  new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'});
+        this.options = {
+            headers : new HttpHeaders({'Content-Type': 'application/json;charset=UTF-8'})
+        }
     }
 
     /** CONSULTA TODOS OS USUARIOS CADASTRADOS */
@@ -26,28 +28,39 @@ export class OrcamentoService{
                     }));
     }
 
-    /** CONSULTA UM USUARIO PELO CODIGO */
+    /** CONSULTA UM ORCAMENTO PELO CODIGO */
     getOrcamento(codigo:number){
         return this.http.get<Orcamento>(this.baseUrlService + codigo).pipe(map(res => {
             return res;
         }));
     }
 
-    /** CONSULTA UM USUARIO PELA DESCRICAO */
+    /** CONSULTA UM ORCAMENTO PELA DESCRICAO */
     getOrcamentoByDescription(descricao:string){
-        return this.http.get<Orcamento[]>(this.baseUrlService + descricao).pipe(map(res => {
+        let param = 'description/' + descricao
+        return this.http.get<Orcamento[]>(this.baseUrlService + param).pipe(map(res => {
             return res;
         }));
     }
 
-     /** CONSULTA UM USUARIO PELO TIPO INSUMO */
-    getOrcamentoByClient(type:string){
-        return this.http.get<Orcamento[]>(this.baseUrlService + type).pipe(map(res => {
+     /** CONSULTA UM ORCAMENTO PELO CLIENTE */
+    getOrcamentoByClient(cliente:string){
+        let param = 'cliente/' + cliente
+        return this.http.get<Orcamento[]>(this.baseUrlService + param).pipe(map(res => {
             return res;
         }));
     }
 
-    /** ADICIONA UM NOVO USUARIO */
+     /** CONSULTA O ID DO ULTIMO ORCAMENTO GRAVADO */
+     getOrcamentoByLastId(){
+        return this.http
+                    .get<any>(this.baseUrlService+'/id')
+                    .pipe(map(res => {
+                        return res;
+                    }));
+    }
+
+    /** ADICIONA UM NOVO ORCAMENTO */
     addOrcamento(orcamento: Orcamento){
         return this.http.post<any>(this.baseUrlService, JSON.stringify(orcamento), this.options)
                     .pipe(map(orca => {
@@ -56,7 +69,7 @@ export class OrcamentoService{
 
     }
 
-    /** EXCLUI UM USUARIO */
+    /** EXCLUI UM ORCAMENTO */
     deleteOrcamento(codigo:number){
         return this.http.delete(this.baseUrlService + codigo)
                     .pipe(map(res => {
@@ -64,7 +77,7 @@ export class OrcamentoService{
                     }));
     }
 
-    /** ATUALIZA INFORMAÇÕES DE UM USUARIO */
+    /** ATUALIZA INFORMAÇÕES DE UM ORCAMENTO */
     updateOrcamento(orcamento: Orcamento){
         return this.http.put(this.baseUrlService, JSON.stringify(orcamento),this.options)
         .pipe(map(res => {
